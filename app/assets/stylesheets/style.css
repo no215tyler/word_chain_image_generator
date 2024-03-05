@@ -1,0 +1,50 @@
+#typing-game {
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+#word-container {
+  margin-bottom: 10px;
+}
+
+#typing-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#feedback-message {
+  color: red;
+  font-weight: bold;
+}
+
+/* キーボードデザイン */
+#keyboard-layout {
+  margin: 0 auto;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.key {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.key:hover {
+  background-color: #eaeaea;
+}
+
+#spacebar {
+  width: 250px;
+  padding: 10px 50px; /* スペースバーの幅を調整 */
+}
