@@ -27,6 +27,7 @@
 .keyboard-row {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap; /* 行が折り返されるようにする */
   margin-bottom: 5px;
 }
 
@@ -46,5 +47,40 @@
 
 #spacebar {
   width: 250px;
-  padding: 10px 50px; /* スペースバーの幅を調整 */
+  padding: 10px; /* スペースバーの幅を調整 */
+}
+
+/* メディアクエリでレスポンシブ対応 */
+@media (max-width: 768px) {
+  /* タブレット画面のスタイリング */
+  .key, #spacebar {
+    padding: 8px 6px; /* キーのパディングを調整 */
+    margin: 3px; /* キーのマージンを調整 */
+    font-size: 14px; /* フォントサイズを調整 */
+  }
+
+  #spacebar {
+    padding: 8px; /* スペースバーのパディングを調整 */
+  }
+}
+
+@media (max-width: 480px) {
+  /* スマートフォン画面のスタイリング */
+  #typing-game {
+    margin: 10px auto;
+  }
+
+  #typing-input {
+    width: 70%;
+  }
+
+  .key, #spacebar {
+    padding: 6px 4px; /* キーのパディングを調整 */
+    margin: 2px; /* キーのマージンを調整 */
+    font-size: 12px; /* フォントサイズを調整 */
+  }
+
+  #spacebar {
+    padding: 6px; /* スペースバーのパディングを調整 */
+  }
 }
