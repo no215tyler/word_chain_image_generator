@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
   const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
+  const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
   let romajiInput = ''; // ローマ字入力を蓄積する変数
 
   // ローマ字とひらがなの対応表
@@ -75,6 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   };
 
+  // フィードバックメッセージを表示する関数
+  function showFeedback(msg) {
+    feedbackMessage.textContent = msg; // メッセージを表示
+    setTimeout(() => {
+      feedbackMessage.textContent = ''; // 2秒後にメッセージを消去
+    }, 2000);
+  }
 
   // ローマ字からひらがなへの変換を試みる関数
   function convertRomajiToHiragana(romaji) {
@@ -129,16 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         romajiInput += keyValue;
         let { match, remainder } = convertRomajiToHiragana(romajiInput);
-        console.log(match, remainder) // debug
+
         if (match) {
           typingInput.value += match;
           romajiInput = remainder;
-        } else if (romajiInput.length > 2 && !romajiToHiraganaMap[romajiInput] && remainder) {
-          // 不適切な入力があった場合、ローマ字入力をリセット
+        } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
+          // フィードバック関数を使用して不適切な入力をユーザーに通知
+          showFeedback("NG!");
           romajiInput = ''; // 入力をリセットして新たな入力を受け付ける
         }
       }
     }
   });
 });
-
