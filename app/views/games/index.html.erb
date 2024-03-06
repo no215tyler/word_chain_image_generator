@@ -1,0 +1,19 @@
+<head>
+    <meta charset="UTF-8">
+    <title>しりとりタイピングゲーム</title>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+  <div id="typing-game">
+    <div id="word-container">
+      <%# この中に、しりとりの単語を表示するためのHTMLを追加 %>
+    </div>
+    <input type="text" id="typing-input" placeholder="ここへタイピングしてね" autofocus>
+    <div id="keyboard-container">
+      <!-- キーボードレイアウトのHTMLをここに追加する -->
+      <%= render 'keyboard_layouts' %>
+    </div>
+    <p id="feedback-message"></p>
+  </div>
+</body>
+</html>
