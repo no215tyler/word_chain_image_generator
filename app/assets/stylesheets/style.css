@@ -50,6 +50,68 @@
   padding: 10px; /* スペースバーの幅を調整 */
 }
 
+/* ------------------------- */
+/* しりとり状況の表示領域 */
+#word-chain-status {
+  background-color: #fffbf0; /* 薄いピンク色の背景 */
+  border: 2px dashed #FFB6C1; /* ダッシュ線のボーダー */
+  border-radius: 10px; /* 角の丸み */
+  color: #FF69B4; /* フレーズの色 */
+  font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 子供向けのフォント */
+  font-size: 20px; /* フォントサイズ */
+  margin: 10px 0; /* 上下のマージン */
+  padding: 10px; /* 内側の余白 */
+  white-space: nowrap; /* 折り返しを防ぐ */
+  overflow-x: auto; /* 横方向のスクロールバー */
+  display: flex; /* フレックスボックス */
+  align-items: center; /* アイテムを中央揃え */
+  flex-wrap: wrap; /* コンテンツが溢れたら折り返し */
+}
+
+#word-chain-status p, .word-item {
+  margin: 3px 10px; /* フレーズ間のマージン */
+  display: inline-block; /* インラインブロック要素として表示 */
+  background-color: #FFC0CB; /* フレーズの背景色 */
+  border-radius: 5px; /* フレーズの角の丸み */
+  padding: 5px 10px; /* フレーズのパディング */
+  box-shadow: 2px 2px 4px #888888; /* 影の効果 */
+}
+
+/* スクロールバーのスタイル（Chrome, Edge, Safari用） */
+#word-chain-status::-webkit-scrollbar {
+  height: 8px;
+}
+
+#word-chain-status::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+#word-chain-status::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+#word-chain-status::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
+/* 「しりとりの状況」テキストスタイル */
+.word-chain-status-heading {
+  width: 100%; /* 幅を100%に設定して折り返しの起点に */
+  font-size: 20px; /* フォントサイズを大きく */
+  color: #ffffff; 
+  background-color: #f09ed7;
+  margin-bottom: 10px; /* 下マージンで区切りを作る */
+  text-align: left; /* 左寄せ */
+  border: 2px solid #FFB6C1; /* ダッシュ線のボーダー */
+  border-radius: 10px; /* 角の丸み */
+  text-align: center;
+}
+
+
+
+/* ------------------------- */
+
 /* メディアクエリでレスポンシブ対応 */
 @media (max-width: 768px) {
   /* タブレット画面のスタイリング */

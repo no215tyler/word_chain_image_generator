@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
   const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
   const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
+  const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
   let romajiInput = ''; // ローマ字入力を蓄積する変数
+  let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 
   // ローマ字とひらがなの対応表
   const romajiToHiraganaMap = {
@@ -16,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ya': 'や', 'yu': 'ゆ', 'yo': 'よ',
     'ra': 'ら', 'ri': 'り', 'ru': 'る', 're': 'れ', 'ro': 'ろ',
     'wa': 'わ', 'wo': 'を',
-    'n': 'ん',
+    'n': 'ん', 'nn': 'ん',
     'vu': 'ゔ',
 
     // 拗音
@@ -128,12 +130,43 @@ document.addEventListener('DOMContentLoaded', () => {
     return { match: '', remainder: romaji };
   }
 
+  // 「return」キーがクリックされた場合の処理
+  function addPhraseAndArrow(phrase) {
+    // 最後に追加された矢印があれば、それを表示する
+    if (lastArrowElement) {
+      lastArrowElement.style.display = 'inline-block'; // CSSで非表示にしていた場合
+    }
+
+    // フレーズの追加
+    const phraseElement = document.createElement('div');
+    phraseElement.textContent = phrase;
+    phraseElement.className = 'word-item';
+    wordChainStatus.appendChild(phraseElement);
+
+    // 新しい矢印の作成（ただし表示はしない）
+    const arrowElement = document.createElement('div');
+    arrowElement.textContent = '▶︎';
+    arrowElement.className = 'arrow-item';
+    arrowElement.style.display = 'none'; // 最初は表示しない
+    wordChainStatus.appendChild(arrowElement);
+
+    // 最後の矢印要素を更新
+    lastArrowElement = arrowElement;
+  }
+
   keyboardLayout.addEventListener('click', (event) => {
-    if (event.target.classList.contains('key') && !['shift', 'return', 'space'].includes(event.target.textContent.toLowerCase())) {
+    if (event.target.classList.contains('key') && !['shift', 'space'].includes(event.target.textContent.toLowerCase())) {
       const keyValue = event.target.textContent.toLowerCase();
       if (keyValue === 'delete') {
         romajiInput = romajiInput.slice(0, -1);
         typingInput.value = typingInput.value.slice(0, -1);
+      } else if (keyValue === 'return') {
+        // 「return」キーがクリックされた場合、しりとり状況を更新
+        if (typingInput.value.trim().length > 0) { // 空でない入力がある場合のみ処理
+          addPhraseAndArrow(typingInput.value); // フレーズと矢印の追加
+          typingInput.value = ''; // typing-input内の入力文字をリセット
+          romajiInput = ''; // ローマ字入力もリセット
+        }
       } else {
         romajiInput += keyValue;
         let { match, remainder } = convertRomajiToHiragana(romajiInput);
@@ -146,6 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
           showFeedback("NG!");
           romajiInput = ''; // 入力をリセットして新たな入力を受け付ける
         }
+      }
+    }
+  });
+
+  typingInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      if (typingInput.value.trim().length > 0) { // 空でない入力がある場合のみ処理
+        addPhraseAndArrow(typingInput.value); // フレーズと矢印の追加
+        typingInput.value = ''; // typing-input内の入力文字をリセット
+        romajiInput = ''; // ローマ字入力もリセット
+        event.preventDefault(); // フォーム送信の防止
       }
     }
   });
