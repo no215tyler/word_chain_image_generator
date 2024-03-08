@@ -69,6 +69,7 @@
 }
 
 #word-chain-status p, .word-item {
+  font-family: "Mochiy Pop One", sans-serif;
   margin: 3px 10px; /* フレーズ間のマージン */
   display: inline-block; /* インラインブロック要素として表示 */
   background-color: #FFC0CB; /* フレーズの背景色 */
@@ -97,6 +98,7 @@
 
 /* 「しりとりの状況」テキストスタイル */
 .word-chain-status-heading {
+  font-family: "Mochiy Pop One", sans-serif;
   width: 100%; /* 幅を100%に設定して折り返しの起点に */
   font-size: 20px; /* フォントサイズを大きく */
   color: #ffffff; 
