@@ -6,12 +6,13 @@ const feedbackMessage = document.getElementById('feedback-message'); // タイ�
 const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
 let romajiInput = ''; // ローマ字入力を蓄積する変数
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
+let usedWords = []; // これまでに入力された単語を保持する配列
 
 document.addEventListener('DOMContentLoaded', () => {
   
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
-    feedbackMessage.textContent = msg; // メッセージを表示
+    feedbackMessage.innerHTML = msg.replace(/\n/g, '<br>'); // メッセージを表示、\n を <br> に置換
     setTimeout(() => {
       feedbackMessage.textContent = ''; // 2秒後にメッセージを消去
     }, 2000);
@@ -61,8 +62,53 @@ document.addEventListener('DOMContentLoaded', () => {
     return { match: '', remainder: romaji };
   }
 
+  // #################################
+  //    しりとりのルールチェックを行う関数
+  // #################################
+  function isValidShiritoriWord(word) {
+  // 入力された単語が空、または既に使われた単語の場合は無効
+  if (!word || usedWords.includes(word)) {
+    showFeedback("もう使われたフレーズだよ！");
+    return false;
+  }
+
+  // 最初の単語の場合はチェック不要
+  if (usedWords.length === 0) return true;
+
+  // 前回の単語の最終文字を取得
+  let lastWord = usedWords[usedWords.length - 1];
+  let lastChar = lastWord[lastWord.length - 1];
+
+  // 長音記号で終わる場合は最後から2文字目を使用
+  if (lastChar === 'ー') {
+    lastChar = lastWord[lastWord.length - 2];
+  }
+
+  // 入力された単語の最初の文字が前の単語の最後の文字と一致するか
+  if (word.startsWith(lastChar)) {
+    return true;
+  } else {
+    showFeedback("前の単語の最後の文字から始めてね！");
+    return false;
+  }
+}
+
   // 「return」キーがクリックされた場合の処理
   function addPhraseAndArrow(phrase) {
+    // 入力された単語がしりとりのルールに適合しているかチェック
+    if (!isValidShiritoriWord(phrase)) return;
+
+    // 「ん」で終わる単語のチェック
+    if (phrase.endsWith('ん')) {
+      showFeedback("ゲーム終了！。\n最後の文字が「ん」で終わってるよ！");
+      // ゲーム終了処理やリセット処理をここに追加する(ゲームのリセットや再開ボタンの提示など)
+
+      return; // この時点で処理を中断
+    }
+
+    // 単語を使用済み配列に追加
+    usedWords.push(phrase);
+
     // 最後に追加された矢印があれば、それを表示する
     if (lastArrowElement) {
       lastArrowElement.style.display = 'inline-block'; // CSSで非表示にしていた場合
