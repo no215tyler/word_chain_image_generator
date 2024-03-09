@@ -1,0 +1,165 @@
+#typing-game {
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+#word-container {
+  margin-bottom: 10px;
+}
+
+#typing-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#feedback-message {
+  font-family: "Mochiy Pop One", sans-serif;
+  font-size: 30px;
+  color: red;
+  font-weight: bold;
+}
+
+/* キーボードデザイン */
+#keyboard-layout {
+  margin: 0 auto;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* 行が折り返されるようにする */
+  margin-bottom: 5px;
+}
+
+.key {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin: 0 2px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.key:hover {
+  background-color: #eaeaea;
+}
+
+#spacebar {
+  width: 250px;
+  padding: 10px; /* スペースバーの幅を調整 */
+}
+
+.key.active {
+  background-color: #eaeaea; /* ハイライト時の背景色 */
+}
+
+#se-toggle-button {
+  margin: 10px; 
+  padding: 5px 10px; 
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+/* ------------------------- */
+/* しりとり状況の表示領域 */
+#word-chain-status {
+  background-color: #fffbf0; /* 薄いピンク色の背景 */
+  border: 2px dashed #FFB6C1; /* ダッシュ線のボーダー */
+  border-radius: 10px; /* 角の丸み */
+  color: #FF69B4; /* フレーズの色 */
+  font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 子供向けのフォント */
+  font-size: 20px; /* フォントサイズ */
+  margin: 10px 0; /* 上下のマージン */
+  padding: 10px; /* 内側の余白 */
+  white-space: nowrap; /* 折り返しを防ぐ */
+  overflow-x: auto; /* 横方向のスクロールバー */
+  display: flex; /* フレックスボックス */
+  align-items: center; /* アイテムを中央揃え */
+  flex-wrap: wrap; /* コンテンツが溢れたら折り返し */
+}
+
+#word-chain-status p, .word-item {
+  font-family: "Mochiy Pop One", sans-serif;
+  margin: 3px 10px; /* フレーズ間のマージン */
+  display: inline-block; /* インラインブロック要素として表示 */
+  background-color: #FFC0CB; /* フレーズの背景色 */
+  border-radius: 5px; /* フレーズの角の丸み */
+  padding: 5px 10px; /* フレーズのパディング */
+  box-shadow: 2px 2px 4px #888888; /* 影の効果 */
+}
+
+/* スクロールバーのスタイル（Chrome, Edge, Safari用） */
+#word-chain-status::-webkit-scrollbar {
+  height: 8px;
+}
+
+#word-chain-status::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+#word-chain-status::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+#word-chain-status::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
+/* 「しりとりの状況」テキストスタイル */
+.word-chain-status-heading {
+  font-family: "Mochiy Pop One", sans-serif;
+  width: 100%; /* 幅を100%に設定して折り返しの起点に */
+  font-size: 20px; /* フォントサイズを大きく */
+  color: #ffffff; 
+  background-color: #f09ed7;
+  margin-bottom: 10px; /* 下マージンで区切りを作る */
+  text-align: left; /* 左寄せ */
+  border: 2px solid #FFB6C1; /* ダッシュ線のボーダー */
+  border-radius: 10px; /* 角の丸み */
+  text-align: center;
+}
+
+
+
+/* ------------------------- */
+
+/* メディアクエリでレスポンシブ対応 */
+@media (max-width: 768px) {
+  /* タブレット画面のスタイリング */
+  .key, #spacebar {
+    padding: 8px 6px; /* キーのパディングを調整 */
+    margin: 3px; /* キーのマージンを調整 */
+    font-size: 14px; /* フォントサイズを調整 */
+  }
+
+  #spacebar {
+    padding: 8px; /* スペースバーのパディングを調整 */
+  }
+}
+
+@media (max-width: 480px) {
+  /* スマートフォン画面のスタイリング */
+  #typing-game {
+    margin: 10px auto;
+  }
+
+  #typing-input {
+    width: 70%;
+  }
+
+  .key, #spacebar {
+    padding: 6px 4px; /* キーのパディングを調整 */
+    margin: 2px; /* キーのマージンを調整 */
+    font-size: 12px; /* フォントサイズを調整 */
+  }
+
+  #spacebar {
+    padding: 6px; /* スペースバーのパディングを調整 */
+  }
+}
