@@ -107,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
           romajiInput = remainder;
         } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
           // フィードバック関数を使用して不適切な入力をユーザーに通知
+          playNgSound();
           showFeedback("NG!");
           romajiInput = ''; // 入力をリセットして新たな入力を受け付ける
         }
@@ -153,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
           romajiInput = remainder;
         } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
           // 不適切な入力をユーザーに通知
+          playNgSound();
           showFeedback("NG!");
           romajiInput = ''; // 入力をリセット
         }
@@ -183,3 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function playNgSound() {
+  const ngSound = new Audio('/sounds/ng_sound.mp3');
+  ngSound.play()
+}
