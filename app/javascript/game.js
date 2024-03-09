@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   keyboardLayout.addEventListener('click', (event) => {
-    if (event.target.classList.contains('key') && !['shift', 'space'].includes(event.target.textContent.toLowerCase())) {
+    if (event.target.classList.contains('key') && !['shift'].includes(event.target.textContent.toLowerCase())) {
       const keyValue = event.target.textContent.toLowerCase();
       if (keyValue === 'delete') {
         romajiInput = romajiInput.slice(0, -1);
@@ -98,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
           typingInput.value = ''; // typing-input内の入力文字をリセット
           romajiInput = ''; // ローマ字入力もリセット
         }
+      } else if (keyValue === 'space') {
+        // スペースキーがクリックされた場合、カナのトグルを実行
+        typingInput.value = toggleKana(typingInput.value);
       } else {
         romajiInput += keyValue;
         let { match, remainder } = convertRomajiToHiragana(romajiInput);
@@ -190,3 +193,37 @@ function playNgSound() {
   const ngSound = new Audio('/sounds/ng_sound.mp3');
   ngSound.play()
 }
+
+function toggleKana(text) {
+  // ひらがなとカタカナの対応表
+  const hiragana = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉゃゅょゔ";
+  const katakana = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォャュョヴ";
+  
+  let convertedText = "";
+  for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      if (hiragana.includes(char)) {
+          // ひらがなからカタカナへ変換
+          const index = hiragana.indexOf(char);
+          convertedText += katakana[index];
+      } else if (katakana.includes(char)) {
+          // カタカナからひらがなへ変換
+          const index = katakana.indexOf(char);
+          convertedText += hiragana[index];
+      } else {
+          // その他の文字はそのまま
+          convertedText += char;
+      }
+  }
+  return convertedText;
+}
+
+// スペースキー押下時のイベントリスナー
+document.addEventListener('keydown', function(event) {
+  if (event.key === ' ') { // スペースキーが押された場合
+      const currentText = typingInput.value;
+      const toggledText = toggleKana(currentText);
+      typingInput.value = toggledText; // 変換後のテキストを入力フィールドに設定
+      event.preventDefault(); // スペースキーのデフォルトの動作（スペースの挿入）を防ぐ
+  }
+});
