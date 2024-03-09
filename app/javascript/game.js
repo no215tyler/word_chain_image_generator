@@ -189,10 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function playNgSound() {
-  const ngSound = new Audio('/sounds/ng_sound.mp3');
-  ngSound.play()
-}
 
 function toggleKana(text) {
   // ひらがなとカタカナの対応表
@@ -227,3 +223,27 @@ document.addEventListener('keydown', function(event) {
       event.preventDefault(); // スペースキーのデフォルトの動作（スペースの挿入）を防ぐ
   }
 });
+
+// -------------------------
+  // SEのON / OFFトグル
+// -------------------------
+// SEの再生状態を管理する変数
+let isSeEnabled = true;
+
+// SEのON/OFFを切り替えるボタンを作成
+const seToggleButton = document.getElementById('se-toggle-button');
+seToggleButton.textContent = 'Sound: ON';
+
+
+// ボタンクリックイベントの定義
+seToggleButton.addEventListener('click', () => {
+  isSeEnabled = !isSeEnabled; // SEの状態を切り替え
+  seToggleButton.textContent = isSeEnabled ? 'Sound: ON' : 'Sound: OFF'; // ボタンのテキストを更新
+});
+
+// SEを再生する関数（既存のplayNgSound関数に変更を加える）
+function playNgSound() {
+  if (!isSeEnabled) return; // SEがOFFの場合はここで処理を終了
+  const ngSound = new Audio('/sounds/ng_sound.mp3');
+  ngSound.play().catch(e => console.error("Audio play failed:", e));
+}

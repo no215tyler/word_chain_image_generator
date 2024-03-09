@@ -56,6 +56,14 @@
   background-color: #eaeaea; /* ハイライト時の背景色 */
 }
 
+#se-toggle-button {
+  margin: 10px; 
+  padding: 5px 10px; 
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 
 /* ------------------------- */
 /* しりとり状況の表示領域 */
