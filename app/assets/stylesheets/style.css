@@ -50,6 +50,11 @@
   padding: 10px; /* スペースバーの幅を調整 */
 }
 
+.key.active {
+  background-color: #eaeaea; /* ハイライト時の背景色 */
+}
+
+
 /* ------------------------- */
 /* しりとり状況の表示領域 */
 #word-chain-status {

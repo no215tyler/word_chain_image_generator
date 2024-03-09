@@ -1,11 +1,13 @@
 import { romajiToHiraganaMap } from "./romajiToHiraganaMap.js"; 
+// 【グローバル変数】
+const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
+const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
+const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
+const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
+let romajiInput = ''; // ローマ字入力を蓄積する変数
+let lastArrowElement = null; // 最後の矢印要素を管理するための変数
+
 document.addEventListener('DOMContentLoaded', () => {
-  const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
-  const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
-  const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
-  const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
-  let romajiInput = ''; // ローマ字入力を蓄積する変数
-  let lastArrowElement = null; // 最後の矢印要素を管理するための変数
   
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
@@ -120,6 +122,64 @@ document.addEventListener('DOMContentLoaded', () => {
         romajiInput = ''; // ローマ字入力もリセット
         event.preventDefault(); // フォーム送信の防止
       }
+    }
+  });
+
+  // 【物理キーボードとの連動】
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Backspace') {
+      // Backspaceが押された場合の処理
+      romajiInput = romajiInput.slice(0, -1);
+      typingInput.value = typingInput.value.slice(0, -1);
+      event.preventDefault(); // フォームの送信を防ぐ
+    } else if (event.key === 'Enter') {
+      // Enterが押された場合の処理
+      if (typingInput.value.trim().length > 0) {
+        addPhraseAndArrow(typingInput.value);
+        typingInput.value = '';
+        romajiInput = '';
+      }
+      event.preventDefault(); // フォームの送信を防ぐ
+    } else {
+      // 英字キーが押された場合の処理
+      const key = event.key.toLowerCase();
+      // 特定のキー(コントロールキーなど)を無視
+      if (key.length === 1 && key.match(/[a-z]/i)) {
+        romajiInput += key;
+        let { match, remainder } = convertRomajiToHiragana(romajiInput);
+
+        if (match) {
+          typingInput.value += match;
+          romajiInput = remainder;
+        } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
+          // 不適切な入力をユーザーに通知
+          showFeedback("NG!");
+          romajiInput = ''; // 入力をリセット
+        }
+        
+        // 英字キーのデフォルトの入力処理をキャンセル
+        event.preventDefault();        
+      }
+
+      if (key === "-") { 
+        event.preventDefault(); // デフォルトのイベントをキャンセル
+        typingInput.value += "ー"; 
+      }
+    }
+
+    // 物理キーボードのキー入力をハイライト
+    const virtualKeyElement = document.querySelector(`.key[data-key="${event.key.toLowerCase()}"]`);
+    if (virtualKeyElement) {
+      virtualKeyElement.classList.add('active');
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    // キーが離されたときのハイライト削除
+    const key = event.key;
+    const virtualKeyElement = document.querySelector(`.key[data-key="${key.toLowerCase()}"]`);
+    if (virtualKeyElement) {
+      virtualKeyElement.classList.remove('active');
     }
   });
 });
