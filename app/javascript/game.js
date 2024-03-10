@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 正規化された単語が既に使用されたかチェック
     if (normalizedUsedWords.includes(normalizedInput)) {
+        playNgSound();
         showFeedback("もう使われたフレーズだよ！");
         return false;
     }
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 「ん」で終わるかチェック
     if (normalizedInput.endsWith('ん')) {
+        playNgSound();
         showFeedback("ゲーム終了！\n最後の文字が「ん」で終わってるよ！");
         return false; // ここで処理を終了し、ゲーム終了処理を行う
     }
@@ -101,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (normalizedUsedWords.length === 0 || normalizedInput.startsWith(lastChar)) {
         return true;
     } else {
+        playNgSound();
         showFeedback("前の単語の最後の文字から始めてね！");
         return false;
     }
@@ -275,21 +278,18 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
-// -------------------------
-  // SEのON / OFFトグル
-// -------------------------
-// SEの再生状態を管理する変数
-let isSeEnabled = true;
+// #########################
+//     SEのON / OFFトグル
+// #########################
+// SEのON/OFFを切り替えるイメージ要素
+const seToggleImage = document.getElementById('se-toggle-image'); // HTMLにid="se-toggle-image"のimg要素を追加する
 
-// SEのON/OFFを切り替えるボタンを作成
-const seToggleButton = document.getElementById('se-toggle-button');
-seToggleButton.textContent = 'Sound: ON';
+let isSeEnabled = true; // SEの再生状態を管理
 
-
-// ボタンクリックイベントの定義
-seToggleButton.addEventListener('click', () => {
+// イメージクリックイベントの定義
+seToggleImage.addEventListener('click', () => {
   isSeEnabled = !isSeEnabled; // SEの状態を切り替え
-  seToggleButton.textContent = isSeEnabled ? 'Sound: ON' : 'Sound: OFF'; // ボタンのテキストを更新
+  seToggleImage.src = isSeEnabled ? './images/volume_on.jpg' : './images/volume_off.jpg'; // イメージのソースを更新
 });
 
 // SEを再生する関数（既存のplayNgSound関数に変更を加える）
