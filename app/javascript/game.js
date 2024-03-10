@@ -1,4 +1,5 @@
 import { romajiToHiraganaMap } from "./romajiToHiraganaMap.js"; 
+import { kanaMap } from "./kana_conversion.js";
 // 【グローバル変数】
 const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
 const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
@@ -65,49 +66,53 @@ document.addEventListener('DOMContentLoaded', () => {
   // #################################
   //    しりとりのルールチェックを行う関数
   // #################################
+  // 平仮名またはカタカナを統一的に扱うための関数
+  function normalizeKana(word) {
+    return [...word].map(char => kanaMap[char] || char).join('');
+  }
+
   function isValidShiritoriWord(word) {
-  // 入力された単語が空、または既に使われた単語の場合は無効
-  if (!word || usedWords.includes(word)) {
-    showFeedback("もう使われたフレーズだよ！");
-    return false;
+    // 入力された単語を平仮名に正規化
+    let normalizedInput = normalizeKana(word);
+
+    // 既に使われた単語リストを平仮名に正規化
+    let normalizedUsedWords = usedWords.map(w => normalizeKana(w));
+
+    // 正規化された単語が既に使用されたかチェック
+    if (normalizedUsedWords.includes(normalizedInput)) {
+        showFeedback("もう使われたフレーズだよ！");
+        return false;
+    }
+
+    // 前回の単語の最終文字を取得（平仮名に正規化）
+    let lastWordNormalized = normalizedUsedWords.length > 0 ? normalizedUsedWords[normalizedUsedWords.length - 1] : '';
+    let lastChar = lastWordNormalized.slice(-1);
+    if (lastChar === 'ー') {
+        lastChar = lastWordNormalized.slice(-2, -1);
+    }
+
+    // 「ん」で終わるかチェック
+    if (normalizedInput.endsWith('ん')) {
+        showFeedback("ゲーム終了！\n最後の文字が「ん」で終わってるよ！");
+        return false; // ここで処理を終了し、ゲーム終了処理を行う
+    }
+
+    // 最初の単語、または前の単語の最後の文字から始まっているかチェック
+    if (normalizedUsedWords.length === 0 || normalizedInput.startsWith(lastChar)) {
+        return true;
+    } else {
+        showFeedback("前の単語の最後の文字から始めてね！");
+        return false;
+    }
   }
-
-  // 最初の単語の場合はチェック不要
-  if (usedWords.length === 0) return true;
-
-  // 前回の単語の最終文字を取得
-  let lastWord = usedWords[usedWords.length - 1];
-  let lastChar = lastWord[lastWord.length - 1];
-
-  // 長音記号で終わる場合は最後から2文字目を使用
-  if (lastChar === 'ー') {
-    lastChar = lastWord[lastWord.length - 2];
-  }
-
-  // 入力された単語の最初の文字が前の単語の最後の文字と一致するか
-  if (word.startsWith(lastChar)) {
-    return true;
-  } else {
-    showFeedback("前の単語の最後の文字から始めてね！");
-    return false;
-  }
-}
 
   // 「return」キーがクリックされた場合の処理
   function addPhraseAndArrow(phrase) {
     // 入力された単語がしりとりのルールに適合しているかチェック
     if (!isValidShiritoriWord(phrase)) return;
 
-    // 「ん」で終わる単語のチェック
-    if (phrase.endsWith('ん')) {
-      showFeedback("ゲーム終了！。\n最後の文字が「ん」で終わってるよ！");
-      // ゲーム終了処理やリセット処理をここに追加する(ゲームのリセットや再開ボタンの提示など)
-
-      return; // この時点で処理を中断
-    }
-
-    // 単語を使用済み配列に追加
-    usedWords.push(phrase);
+    // 単語を使用済み配列に追加（正規化してから追加）
+    usedWords.push(normalizeKana(phrase));
 
     // 最後に追加された矢印があれば、それを表示する
     if (lastArrowElement) {
