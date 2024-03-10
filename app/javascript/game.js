@@ -85,11 +85,24 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
-    // 前回の単語の最終文字を取得（平仮名に正規化）
-    let lastWordNormalized = normalizedUsedWords.length > 0 ? normalizedUsedWords[normalizedUsedWords.length - 1] : '';
-    let lastChar = lastWordNormalized.slice(-1);
+    // 前回の単語の最終文字または拗音を取得（平仮名に正規化）
+    let lastWord = normalizedUsedWords.length > 0 ? normalizedUsedWords[normalizedUsedWords.length - 1] : '';
+    let lastChar = lastWord.slice(-1);
     if (lastChar === 'ー') {
-        lastChar = lastWordNormalized.slice(-2, -1);
+        lastChar = lastWord.slice(-2, -1);
+    }
+
+    // 拗音で終わる場合の判定
+    let yoonPattern = /(きゃ|きゅ|きょ|しゃ|しゅ|しょ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ)$/;
+    let lastWordEndsWithYoon = lastWord.match(yoonPattern);
+    if (lastWordEndsWithYoon) {
+        let normalizedInputStartsWithYoon = normalizedInput.startsWith(lastWordEndsWithYoon[0]);
+        if (!normalizedInputStartsWithYoon) {
+            playNgSound();
+            showFeedback(`${lastWordEndsWithYoon[0]}で始めてね！`);
+            return false;
+        }
+      return true
     }
 
     // 「ん」で終わるかチェック
@@ -104,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     } else {
         playNgSound();
-        showFeedback("前の単語の最後の文字から始めてね！");
+        showFeedback(`「${lastChar}」から始めてね！`);
         return false;
     }
   }
