@@ -1,8 +1,8 @@
 import { romajiToHiraganaMap } from "./romajiToHiraganaMap.js"; 
 import { kanaMap } from "./kana_conversion.js";
 // 【グローバル変数】
-const typingInput = document.getElementById('typing-input'); // 表示用の要素のIDを適宜設定してください
-const keyboardLayout = document.getElementById('keyboard-layout'); // キーボードレイアウトの要素のIDを適宜設定してください
+const typingInput = document.getElementById('typing-input');
+const keyboardLayout = document.getElementById('keyboard-layout');
 const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
 const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
 let romajiInput = ''; // ローマ字入力を蓄積する変数
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (normalizedInput.endsWith('ん')) {
       playNgSound();
       gameOver();
-      return false;
+      return true;
     }
 
     return true;
