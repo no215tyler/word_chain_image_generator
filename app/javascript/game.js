@@ -105,10 +105,45 @@ document.addEventListener('DOMContentLoaded', () => {
       return true
     }
 
+    // ゲーム終了時の処理を追加
+    function gameOver() {
+      const gameOverPopup = document.getElementById('game-over-popup');
+      gameOverPopup.style.display = 'flex'; // ポップアップを表示
+
+      const restartButton = document.getElementById('restart-game');
+      restartButton.addEventListener('click', () => {
+        restartGame(); // ゲームをリスタートする関数を呼び出し
+      });
+    }
+
+    // ゲームをリスタートする関数
+    function restartGame() {
+      const gameOverPopup = document.getElementById('game-over-popup');
+      gameOverPopup.style.display = 'none'; // ポップアップを非表示
+
+      // ゲームの状態を初期化
+      typingInput.value = '';
+      romajiInput = '';
+      usedWords = [];
+      if (lastArrowElement) {
+        lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
+        lastArrowElement = null;
+      }
+      // 「しりとりの状況」以外の要素をword-chain-statusから削除
+      const children = wordChainStatus.children;
+      for (let i = children.length - 1; i >= 0; i--) {
+        const child = children[i];
+        if (!child.classList.contains('word-chain-status-heading')) {
+          wordChainStatus.removeChild(child);
+        }
+      }
+    }
+
+
     // 「ん」で終わるかチェック
     if (normalizedInput.endsWith('ん')) {
         playNgSound();
-        showFeedback("ゲーム終了！\n最後の文字が「ん」で終わってるよ！");
+        gameOver(); // ゲーム終了処理を呼び出し
         return false; // ここで処理を終了し、ゲーム終了処理を行う
     }
 
