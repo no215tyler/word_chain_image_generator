@@ -92,69 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
         lastChar = lastWord.slice(-2, -1);
     }
 
-    // 拗音で終わる場合の判定
-    let yoonPattern = /(きゃ|きゅ|きょ|しゃ|しゅ|しょ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ)$/;
-    let lastWordEndsWithYoon = lastWord.match(yoonPattern);
-    if (lastWordEndsWithYoon) {
-        let normalizedInputStartsWithYoon = normalizedInput.startsWith(lastWordEndsWithYoon[0]);
-        if (!normalizedInputStartsWithYoon) {
-            playNgSound();
-            showFeedback(`${lastWordEndsWithYoon[0]}で始めてね！`);
-            return false;
-        }
-      return true
+    // 拗音で終わる場合、拗音で次の単語を開始する必要がある
+    let yoonEnd = lastWord.slice(-2);
+    let isYoon = /きゃ|きゅ|きょ|しゃ|しゅ|しょ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ/.test(yoonEnd);
+
+    if (normalizedUsedWords.length > 0 && !((isYoon && normalizedInput.startsWith(yoonEnd)) || (!isYoon && normalizedInput.startsWith(lastChar)))) {
+      playNgSound();
+      showFeedback(isYoon ? `「${yoonEnd}」で始めてね！` : `「${lastChar}」から始めてね！`);
+      return false;
     }
 
-    // ゲーム終了時の処理を追加
-    function gameOver() {
-      const gameOverPopup = document.getElementById('game-over-popup');
-      gameOverPopup.style.display = 'flex'; // ポップアップを表示
-
-      const restartButton = document.getElementById('restart-game');
-      restartButton.addEventListener('click', () => {
-        restartGame(); // ゲームをリスタートする関数を呼び出し
-      });
-    }
-
-    // ゲームをリスタートする関数
-    function restartGame() {
-      const gameOverPopup = document.getElementById('game-over-popup');
-      gameOverPopup.style.display = 'none'; // ポップアップを非表示
-
-      // ゲームの状態を初期化
-      typingInput.value = '';
-      romajiInput = '';
-      usedWords = [];
-      if (lastArrowElement) {
-        lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
-        lastArrowElement = null;
-      }
-      // 「しりとりの状況」以外の要素をword-chain-statusから削除
-      const children = wordChainStatus.children;
-      for (let i = children.length - 1; i >= 0; i--) {
-        const child = children[i];
-        if (!child.classList.contains('word-chain-status-heading')) {
-          wordChainStatus.removeChild(child);
-        }
-      }
-    }
-
-
-    // 「ん」で終わるかチェック
     if (normalizedInput.endsWith('ん')) {
-        playNgSound();
-        gameOver(); // ゲーム終了処理を呼び出し
-        return false; // ここで処理を終了し、ゲーム終了処理を行う
+      playNgSound();
+      gameOver();
+      return false;
     }
 
-    // 最初の単語、または前の単語の最後の文字から始まっているかチェック
-    if (normalizedUsedWords.length === 0 || normalizedInput.startsWith(lastChar)) {
-        return true;
-    } else {
-        playNgSound();
-        showFeedback(`「${lastChar}」から始めてね！`);
-        return false;
-    }
+    return true;
   }
 
   // 「return」キーがクリックされた場合の処理
@@ -345,4 +299,39 @@ function playNgSound() {
   if (!isSeEnabled) return; // SEがOFFの場合はここで処理を終了
   const ngSound = new Audio('/sounds/ng_sound.mp3');
   ngSound.play().catch(e => console.error("Audio play failed:", e));
+}
+
+
+// ゲーム終了時の処理を追加
+function gameOver() {
+  const gameOverPopup = document.getElementById('game-over-popup');
+  gameOverPopup.style.display = 'flex'; // ポップアップを表示
+
+  const restartButton = document.getElementById('restart-game');
+  restartButton.addEventListener('click', () => {
+    restartGame(); // ゲームをリスタートする関数を呼び出し
+  });
+}
+
+// ゲームをリスタートする関数
+function restartGame() {
+  const gameOverPopup = document.getElementById('game-over-popup');
+  gameOverPopup.style.display = 'none'; // ポップアップを非表示
+
+  // ゲームの状態を初期化
+  typingInput.value = '';
+  romajiInput = '';
+  usedWords = [];
+  if (lastArrowElement) {
+    lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
+    lastArrowElement = null;
+  }
+  // 「しりとりの状況」以外の要素をword-chain-statusから削除
+  const children = wordChainStatus.children;
+  for (let i = children.length - 1; i >= 0; i--) {
+    const child = children[i];
+    if (!child.classList.contains('word-chain-status-heading')) {
+      wordChainStatus.removeChild(child);
+    }
+  }
 }
