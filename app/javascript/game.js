@@ -10,7 +10,7 @@ let lastArrowElement = null; // 最後の矢印要素を管理するための変
 let usedWords = []; // これまでに入力された単語を保持する配列
 
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
     feedbackMessage.innerHTML = msg.replace(/\n/g, '<br>'); // メッセージを表示、\n を <br> に置換
@@ -301,19 +301,35 @@ function playNgSound() {
   ngSound.play().catch(e => console.error("Audio play failed:", e));
 }
 
-
-// ゲーム終了時の処理を追加
+// #################################
+//       ゲーム終了時の処理
+// #################################
 function gameOver() {
   const gameOverPopup = document.getElementById('game-over-popup');
   gameOverPopup.style.display = 'flex'; // ポップアップを表示
 
   const restartButton = document.getElementById('restart-game');
-  restartButton.addEventListener('click', () => {
-    restartGame(); // ゲームをリスタートする関数を呼び出し
-  });
+  restartButton.focus(); // リスタートボタンにフォーカスをあてる
+  // クリックまたはEnterキー押下でリスタートするイベントリスナーを追加
+  function restartOnAction(event) {
+    // クリックされた、またはEnterキーが押された場合にリスタート
+    if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
+      restartGame();
+
+      // イベントリスナーを削除
+      restartButton.removeEventListener('click', restartOnAction);
+      document.removeEventListener('keydown', restartOnAction);
+    }
+  }
+
+  restartButton.addEventListener('click', restartOnAction);
+  document.addEventListener('keydown', restartOnAction);
 }
 
-// ゲームをリスタートする関数
+
+// #################################
+//       ゲームをリスタートする関数
+// #################################
 function restartGame() {
   const gameOverPopup = document.getElementById('game-over-popup');
   gameOverPopup.style.display = 'none'; // ポップアップを非表示
