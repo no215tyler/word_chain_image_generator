@@ -135,6 +135,7 @@ body {
   text-align: center;
 }
 
+
 .footer {
   display: flex;
   align-items: center;
@@ -145,6 +146,28 @@ body {
   width: 100%;
   height: 60px;
   background-color: #f2f2f2;
+}
+/* ゲーム終了ポップアップのスタイル */
+
+#game-over-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game-over-content {
+  font-family: "Mochiy Pop One", sans-serif;
+  color: red;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
 }
 
 /* ------------------------- */
