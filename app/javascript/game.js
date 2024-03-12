@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 拗音で終わる場合、拗音で次の単語を開始する必要がある
     let yoonEnd = lastWord.slice(-2);
-    let isYoon = /きゃ|きゅ|きょ|しゃ|しゅ|しょ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ/.test(yoonEnd);
+    let isYoon = /きゃ|きゅ|きょ|しゃ|しゅ|しょ|しぇ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ/.test(yoonEnd);
 
     if (normalizedUsedWords.length > 0 && !((isYoon && normalizedInput.startsWith(yoonEnd)) || (!isYoon && normalizedInput.startsWith(lastChar)))) {
       playNgSound();
