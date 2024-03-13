@@ -1,5 +1,5 @@
-import { romajiToHiraganaMap } from "./romajiToHiraganaMap.js"; 
-import { kanaMap } from "./kana_conversion.js";
+import { romajiToHiraganaMap } from "romajiToHiraganaMap"; 
+import { kanaMap } from "kana_conversion";
 // 【グローバル変数】
 const typingInput = document.getElementById('typing-input');
 const keyboardLayout = document.getElementById('keyboard-layout');
