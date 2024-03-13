@@ -95,12 +95,13 @@ body {
 
 #word-chain-status p, .word-item {
   font-family: "Mochiy Pop One", sans-serif;
-  margin: 3px 10px; /* フレーズ間のマージン */
+  margin: 3px 8px; /* フレーズ間のマージン */
   display: inline-block; /* インラインブロック要素として表示 */
   background-color: #FFC0CB; /* フレーズの背景色 */
   border-radius: 5px; /* フレーズの角の丸み */
   padding: 5px 10px; /* フレーズのパディング */
   box-shadow: 2px 2px 4px #888888; /* 影の効果 */
+  font-size: 15px;
 }
 
 /* スクロールバーのスタイル（Chrome, Edge, Safari用） */
