@@ -74,3 +74,4 @@ end
 
 gem 'pg'
 gem 'httparty'
+gem 'pry-rails'
