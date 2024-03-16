@@ -351,3 +351,35 @@ function restartGame() {
     }
   }
 }
+
+function sendWordsToBackend() {
+  const container = document.getElementById('generated-image-container');
+  container.innerHTML = '<div class="loader"></div>';
+  // しりとり結果の単語の配列をJSON形式でバックエンドに送信
+  fetch("/games/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").getAttribute("content")
+    },
+    body: JSON.stringify({ words: usedWords })
+  })
+  .then(response => response.json())
+  .then(data => {
+    container.innerHTML = ''; // ローディングインジケーターをクリア
+
+    // バックエンドから返された画像データを表示
+    const imageElement = document.createElement('img');
+    imageElement.src = `data:image/jpeg;base64,${data.image}`;
+    container.appendChild(imageElement); // コンテナに画像を追加
+  })
+  .catch(error => {
+    console.error('エラーが発生しました:', error);
+    const container = document.getElementById('generated-image-container');
+    container.innerHTML = '<p style="color: red;">画像生成エラー</p>'; // エラーメッセージを表示
+  });
+}
+
+document.getElementById('generate-image-button').addEventListener('click', function() {
+  sendWordsToBackend();
+});
