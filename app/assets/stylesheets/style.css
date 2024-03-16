@@ -222,6 +222,10 @@ body {
   margin-bottom: 20px;
 }
 
+button {
+  margin: 0 5px;
+}
+
 /* ------------------------- */
 
 /* メディアクエリでレスポンシブ対応 */
@@ -240,6 +244,10 @@ body {
   .footer {
     height: 50px;
     line-height: 50px;
+  }
+
+  .feedback-form-container {
+    bottom: 55px;
   }
 }
 
@@ -266,5 +274,13 @@ body {
   .footer {
     height: 40px;
     line-height: 40px;
+  }
+
+  .feedback-form-button {
+    padding: 5px 15px;
+  }
+
+  .feedback-form-container {
+    bottom: 45px;
   }
 }
