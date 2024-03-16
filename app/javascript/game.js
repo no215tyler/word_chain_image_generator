@@ -10,6 +10,9 @@ let lastArrowElement = null; // 最後の矢印要素を管理するための変
 let usedWords = []; // これまでに入力された単語を保持する配列
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateGenerateImageButtonState();
+  const restartAlwaysButton = document.getElementById('restart-game-always');
+  restartAlwaysButton.addEventListener('click', restartGame);
 
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
@@ -118,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 単語を使用済み配列に追加（正規化してから追加）
     usedWords.push(normalizeKana(phrase));
+    updateGenerateImageButtonState();
 
     // 最後に追加された矢印があれば、それを表示する
     if (lastArrowElement) {
@@ -308,6 +312,15 @@ function gameOver() {
   const gameOverPopup = document.getElementById('game-over-popup');
   gameOverPopup.style.display = 'flex'; // ポップアップを表示
 
+  // 「画像生成」ボタンに対するイベントリスナー
+  const generateImageButton = document.getElementById('generate-image-after-game');
+  generateImageButton.addEventListener('click', () => {
+    // ポップアップを閉じる
+    gameOverPopup.style.display = 'none';
+    // 画像生成を開始する
+    sendWordsToBackend();
+  });
+
   const restartButton = document.getElementById('restart-game');
   restartButton.focus(); // リスタートボタンにフォーカスをあてる
   // クリックまたはEnterキー押下でリスタートするイベントリスナーを追加
@@ -335,6 +348,9 @@ function restartGame() {
   gameOverPopup.style.display = 'none'; // ポップアップを非表示
 
   // ゲームの状態を初期化
+  const container = document.getElementById('generated-image-container');
+  const downloadButtons = document.getElementsByClassName('download-button');
+  container.innerHTML = '';
   typingInput.value = '';
   romajiInput = '';
   usedWords = [];
@@ -342,6 +358,10 @@ function restartGame() {
     lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
     lastArrowElement = null;
   }
+  if (downloadButtons[0]) { // 存在チェック
+    downloadButtons[0].parentNode.removeChild(downloadButtons[0]);
+  }
+
   // 「しりとりの状況」以外の要素をword-chain-statusから削除
   const children = wordChainStatus.children;
   for (let i = children.length - 1; i >= 0; i--) {
@@ -350,6 +370,7 @@ function restartGame() {
       wordChainStatus.removeChild(child);
     }
   }
+  updateGenerateImageButtonState();
 }
 
 function sendWordsToBackend() {
@@ -373,31 +394,42 @@ function sendWordsToBackend() {
     imageElement.src = `data:image/jpeg;base64,${data.image}`;
     container.appendChild(imageElement); // コンテナに画像を追加
 
-    // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
-    const downloadButton = document.createElement('button');
-    downloadButton.textContent = '画像をダウンロード';
-    downloadButton.classList.add('download-button'); // CSSクラスの追加
-    // ダウンロード処理
-    downloadButton.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.href = imageElement.src;
-      link.download = 'generated_image.jpg'; // ダウンロード時のファイル名
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-
-    // 「画像生成」ボタンの隣にダウンロードボタンを挿入
-    const generateImageButton = document.getElementById('generate-image-button');
-    generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
+    // 「画像をダウンロード」ボタンが既に存在するかチェック
+    if (!document.querySelector('.download-button')) {
+      // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
+      const downloadButton = document.createElement('button');
+      downloadButton.textContent = '画像をダウンロード';
+      downloadButton.classList.add('download-button'); // CSSクラスの追加
+      // ダウンロード処理
+      downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = imageElement.src;
+        link.download = 'word_chain_generated_image.jpg'; // ダウンロード時のファイル名
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+      // 「画像生成」ボタンの隣にダウンロードボタンを挿入
+      const generateImageButton = document.getElementById('generate-image-button');
+      generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
+    }
   })
   .catch(error => {
     console.error('エラーが発生しました:', error);
     const container = document.getElementById('generated-image-container');
-    container.innerHTML = '<p style="color: red;">画像生成エラー</p>'; // エラーメッセージを表示
+    container.innerHTML = '<p style="color: red;">画像生成エラー<br>時間をおいて試してください</p>'; // エラーメッセージを表示
   });
 }
 
 document.getElementById('generate-image-button').addEventListener('click', function() {
   sendWordsToBackend();
 });
+
+function updateGenerateImageButtonState() {
+  const generateImageButton = document.getElementById('generate-image-button');
+  if (usedWords.length === 0) {
+    generateImageButton.disabled = true; // 配列が空の場合、ボタンを非活性化
+  } else {
+    generateImageButton.disabled = false; // 配列に要素がある場合、ボタンを活性化
+  }
+}

@@ -222,8 +222,12 @@ body {
   margin-bottom: 20px;
 }
 
+.download-button {
+  margin-left: 5px;
+}
+
 button {
-  margin: 0 5px;
+  margin: 0 5px 0 0;
 }
 
 /* ------------------------- */
@@ -269,6 +273,10 @@ button {
 
   #spacebar {
     padding: 6px; /* スペースバーのパディングを調整 */
+  }
+
+  #game-over-content {
+    font-family: "Hiragino Maru Gothic ProN", sans-serif;
   }
 
   .footer {
