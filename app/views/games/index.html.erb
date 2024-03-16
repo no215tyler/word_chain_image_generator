@@ -11,13 +11,15 @@
     </div>
     <input type="text" id="typing-input" placeholder="ここへタイピングしてね" autofocus>
     <div id="keyboard-container">
-      <!-- キーボードレイアウトのHTMLをここに追加する -->
       <%= render 'keyboard_layouts' %>
       <img id="se-toggle-image" src="./images/volume_on.jpg" alt="Sound Toggle" />
     </div>
+    <div id="generated-image-container" style="margin-top: 20px;">
+      <!-- 生成画像表示 -->
+    </div>
+    <button id="generate-image-button">画像生成</button>
     <p id="feedback-message"></p>
   </div>
-  <!-- ゲーム終了ポップアップ -->
   <div id="game-over-popup" class="hidden" style="display: none;">
     <div id="game-over-content">
       <p>ゲーム終了！<br>最後の文字が「ん」で終わってるよ！</p>
