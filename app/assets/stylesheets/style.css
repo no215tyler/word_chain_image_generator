@@ -234,6 +234,14 @@ button {
   margin: 0 5px 0 0;
 }
 
+#generated-image-container p {
+  background-color: #f6f6f6;
+  border-radius: 20px;
+  border: solid 0.5px #ccc;
+  padding: 20px;
+  margin: 10px;
+}
+
 /* ------------------------- */
 
 /* メディアクエリでレスポンシブ対応 */
