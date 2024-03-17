@@ -87,10 +87,14 @@ body {
   margin: 10px 0; /* 上下のマージン */
   padding: 10px; /* 内側の余白 */
   white-space: nowrap; /* 折り返しを防ぐ */
-  overflow-x: auto; /* 横方向のスクロールバー */
   display: flex; /* フレックスボックス */
   align-items: center; /* アイテムを中央揃え */
   flex-wrap: wrap; /* コンテンツが溢れたら折り返し */
+}
+
+#word-chain-status-container {
+  overflow-x: auto; /* 横方向のスクロールバー */
+  flex-wrap: nowrap; /* コンテンツが溢れても折り返ししない */
 }
 
 #word-chain-status p, .word-item {

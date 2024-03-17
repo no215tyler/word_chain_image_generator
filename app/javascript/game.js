@@ -4,7 +4,7 @@ import { kanaMap } from "kana_conversion";
 const typingInput = document.getElementById('typing-input');
 const keyboardLayout = document.getElementById('keyboard-layout');
 const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
-const wordChainStatus = document.getElementById('word-chain-status'); // しりとり状況表示領域の要素
+const wordChainStatus = document.getElementById('word-chain-status-container'); // しりとり状況表示領域の要素
 let romajiInput = ''; // ローマ字入力を蓄積する変数
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 let usedWords = []; // これまでに入力された単語を保持する配列
@@ -143,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 最後の矢印要素を更新
     lastArrowElement = arrowElement;
+    wordChainStatus.scrollLeft = wordChainStatus.scrollWidth;
   }
 
   keyboardLayout.addEventListener('click', (event) => {
