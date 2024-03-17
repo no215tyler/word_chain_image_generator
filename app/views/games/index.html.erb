@@ -1,37 +1,40 @@
-<head>
-    <meta charset="UTF-8">
-    <title>しりとり画像ジェネレーター</title>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-</head>
-<body>
-  <header class="header">
-    <h1>しりとり画像ジェネレーター</h1>
-  </header>
-  <div id="typing-game">
-    <div id="word-chain-status">
-      <div class="word-chain-status-heading"><b>しりとりフィールド</b></div>
-      <div id="word-chain-status-container">
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <title>しりとり画像ジェネレーター</title>
+      <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+    <header class="header">
+      <h1>しりとり画像ジェネレーター</h1>
+    </header>
+    <div id="typing-game">
+      <div id="word-chain-status">
+        <div class="word-chain-status-heading"><b>しりとりフィールド</b></div>
+        <div id="word-chain-status-container">
 
+        </div>
+      </div>
+      <input type="text" id="typing-input" placeholder="ここへタイピングしてね" autofocus>
+      <div id="keyboard-container">
+        <%= render 'keyboard_layouts' %>
+        <img id="se-toggle-image" src="./images/volume_on.jpg" alt="Sound Toggle" />
+      </div>
+      <div class="button-container">
+        <button id="generate-image-button">画像生成</button>
+        <button id="restart-game-always">もういちど</button>
+      </div>
+      <div id="generated-image-container" style="margin-top: 20px;">
+        <!-- 生成画像表示 -->
+      </div>
+        <p id="feedback-message"></p>
+    </div>
+    <div id="game-over-popup" class="hidden" style="display: none;">
+      <div id="game-over-content">
+        <p>ゲーム終了！<br>最後の文字が「ん」で終わってるよ！</p>
+        <button id="restart-game">もういちど</button>
+        <button id="generate-image-after-game">画像生成</button>
       </div>
     </div>
-    <input type="text" id="typing-input" placeholder="ここへタイピングしてね" autofocus>
-    <div id="keyboard-container">
-      <%= render 'keyboard_layouts' %>
-      <img id="se-toggle-image" src="./images/volume_on.jpg" alt="Sound Toggle" />
-    </div>
-    <div id="generated-image-container" style="margin-top: 20px;">
-      <!-- 生成画像表示 -->
-    </div>
-    <button id="generate-image-button">画像生成</button>
-    <button id="restart-game-always">もういちど</button>
-    <p id="feedback-message"></p>
-  </div>
-  <div id="game-over-popup" class="hidden" style="display: none;">
-    <div id="game-over-content">
-      <p>ゲーム終了！<br>最後の文字が「ん」で終わってるよ！</p>
-      <button id="restart-game">もういちど</button>
-      <button id="generate-image-after-game">画像生成</button>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
