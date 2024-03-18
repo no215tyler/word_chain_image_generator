@@ -2,7 +2,7 @@ require 'httparty'
 require 'base64'
 
 class StableDiffusionService
-  API_URL = "https://api-inference.huggingface.co/models/cagliostrolab/animagine-xl-3.0"
+  API_URL = "https://api-inference.huggingface.co/models/stablediffusionapi/breakdomainxl-v6"
   HEADERS = {
     "Authorization" => ENV['STABLE_DIFFUSION_API_KEY']
   }
