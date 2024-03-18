@@ -8,6 +8,7 @@ const wordChainStatus = document.getElementById('word-chain-status-container'); 
 let romajiInput = ''; // ローマ字入力を蓄積する変数
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 let usedWords = []; // これまでに入力された単語を保持する配列
+let restartOnAction = null; 
 
 document.addEventListener('DOMContentLoaded', () => {
   updateGenerateImageButtonState();
@@ -309,24 +310,29 @@ function playNgSound() {
 // #################################
 //       ゲーム終了時の処理
 // #################################
+
+// 画像生成のイベントリスナーとして使用する名前付き関数
+function handleGenerateImageClick() {
+  // ポップアップを閉じる
+  document.getElementById('game-over-popup').style.display = 'none';
+  // 画像生成を開始する
+  sendWordsToBackend();
+}
+
 function gameOver() {
   const gameOverPopup = document.getElementById('game-over-popup');
   gameOverPopup.style.display = 'flex'; // ポップアップを表示
 
   // 「画像生成」ボタンに対するイベントリスナー
   const generateImageButton = document.getElementById('generate-image-after-game');
-  generateImageButton.addEventListener('click', () => {
-    // ポップアップを閉じる
-    gameOverPopup.style.display = 'none';
-    // 画像生成を開始する
-    sendWordsToBackend();
-  });
+
+  generateImageButton.removeEventListener('click', handleGenerateImageClick);
+  generateImageButton.addEventListener('click', handleGenerateImageClick);
 
   const restartButton = document.getElementById('restart-game');
   restartButton.focus(); // リスタートボタンにフォーカスをあてる
   // クリックまたはEnterキー押下でリスタートするイベントリスナーを追加
-  function restartOnAction(event) {
-    // クリックされた、またはEnterキーが押された場合にリスタート
+  restartOnAction = function(event) {
     if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
       restartGame();
 
@@ -334,7 +340,7 @@ function gameOver() {
       restartButton.removeEventListener('click', restartOnAction);
       document.removeEventListener('keydown', restartOnAction);
     }
-  }
+  };
 
   restartButton.addEventListener('click', restartOnAction);
   document.addEventListener('keydown', restartOnAction);
@@ -347,6 +353,11 @@ function gameOver() {
 function restartGame() {
   const gameOverPopup = document.getElementById('game-over-popup');
   gameOverPopup.style.display = 'none'; // ポップアップを非表示
+
+  // イベントリスナーの削除
+  const restartButton = document.getElementById('restart-game');
+  restartButton.removeEventListener('click', restartOnAction);
+  document.removeEventListener('keydown', restartOnAction);
 
   // ゲームの状態を初期化
   const container = document.getElementById('generated-image-container');
@@ -363,13 +374,9 @@ function restartGame() {
     downloadButtons[0].parentNode.removeChild(downloadButtons[0]);
   }
 
-  // 「しりとりの状況」以外の要素をword-chain-statusから削除
-  const children = wordChainStatus.children;
-  for (let i = children.length - 1; i >= 0; i--) {
-    const child = children[i];
-    if (!child.classList.contains('word-chain-status-heading')) {
-      wordChainStatus.removeChild(child);
-    }
+  // しりとりの状況を表示するコンテナをクリア
+  while (wordChainStatus.firstChild) {
+    wordChainStatus.removeChild(wordChainStatus.firstChild);
   }
   updateGenerateImageButtonState();
 }
