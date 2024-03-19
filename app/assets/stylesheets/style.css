@@ -6,6 +6,7 @@
 }
 
 .header h1 {
+  transform: skew(-15deg);
   font-family: "RocknRoll One", sans-serif;
   color: white;
   margin: 0;
@@ -21,13 +22,14 @@ html {
 }
 
 body {
-  font-family: "Zen Maru Gothic", serif;
+  font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   margin-bottom: 120px;
   position: relative;
   margin: 0; /* デフォルトのマージンを取り除く */
   height: 100vh; /* ビューポートの高さに合わせる */
   background: #ffffff; /* オーバーレイの下の背景色 */
   overflow: auto; /* 必要に応じてスクロールを許可 */
+  overflow-x: hidden;
 }
 
 body::before {
@@ -127,7 +129,7 @@ body::before {
 /* しりとり状況の表示領域 */
 #word-chain-status {
   background-color: #fffbf0; /* 薄いピンク色の背景 */
-  border: 2px dashed #FFB6C1; /* ダッシュ線のボーダー */
+  border: 1px solid #FFB6C1;
   border-radius: 10px; /* 角の丸み */
   color: #FF69B4; /* フレーズの色 */
   font-family: 'Comic Sans MS', 'Arial', sans-serif; /* 子供向けのフォント */
@@ -150,10 +152,15 @@ body::before {
   margin: 3px 8px; /* フレーズ間のマージン */
   display: inline-block; /* インラインブロック要素として表示 */
   background-color: #FFC0CB; /* フレーズの背景色 */
-  border-radius: 5px; /* フレーズの角の丸み */
+  border-radius: 0 0 5px 5px; /* フレーズの角の丸み */
   padding: 5px 10px; /* フレーズのパディング */
   box-shadow: 2px 2px 4px #888888; /* 影の効果 */
   font-size: 15px;
+  transform: skew(-15deg);
+}
+
+.arrow-item {
+  transform: skew(-15deg);
 }
 
 input::-webkit-input-placeholder {
@@ -178,17 +185,17 @@ input::-webkit-input-placeholder {
 }
 
 
-/* 「しりとりの状況」テキストスタイル */
+/* 「しりとりフィールド」テキストスタイル */
 .word-chain-status-heading {
   font-family: "Zen Maru Gothic", serif;
+  transform: skew(-15deg);
   width: 100%; /* 幅を100%に設定して折り返しの起点に */
   font-size: 20px; /* フォントサイズを大きく */
   color: #ffffff; 
   background-color: #f09ed7;
   margin-bottom: 10px; /* 下マージンで区切りを作る */
-  text-align: left; /* 左寄せ */
   border: 2px solid #FFB6C1; /* ダッシュ線のボーダー */
-  border-radius: 10px; /* 角の丸み */
+  margin: 0 18px;
   text-align: center;
 }
 
@@ -288,6 +295,7 @@ button {
 
 button {
   margin: 0 5px 0 0;
+  padding: 5px 10px;
 }
 
 #generated-image-container p {
@@ -370,6 +378,10 @@ button {
   .feedback-form-container {
     bottom: 45px;
   }
+
+  .alternative-font {
+    font-family: Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  }  
 }
 
 /* 横画面表示対応 */
