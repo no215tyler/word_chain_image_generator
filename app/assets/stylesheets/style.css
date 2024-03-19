@@ -361,3 +361,23 @@ button {
     bottom: 45px;
   }
 }
+
+/* 横画面表示対応 */
+@media (orientation: landscape) {
+  body {
+    min-height: -webkit-fill-available; /* Safariでの対応 */
+  }
+
+  /* ボタンが画面下部に隠れないように調整 */
+  .button-container {
+    margin-bottom: 60px; /* フッターの高さや余白を考慮した値に調整 */
+  }
+}
+
+/* 既存のフッターのスタイルを確認し、必要に応じて調整 */
+.footer {
+  position: fixed; /* or `absolute`, 必要に応じて変更 */
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
