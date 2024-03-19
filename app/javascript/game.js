@@ -412,7 +412,10 @@ function sendWordsToBackend() {
       downloadButton.addEventListener('click', () => {
         const link = document.createElement('a');
         link.href = imageElement.src;
-        link.download = 'word_chain_generated_image.jpg'; // ダウンロード時のファイル名
+        const now = new Date();
+        const formattedDate = formatDateToNow(now);
+        const promptForFilename = data.filename;
+        link.download = `word_chain_generated_image_${formattedDate}_(${promptForFilename}).jpg`; // ダウンロード時のファイル名
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -440,4 +443,13 @@ function updateGenerateImageButtonState() {
   } else {
     generateImageButton.disabled = false; // 配列に要素がある場合、ボタンを活性化
   }
+}
+
+function formatDateToNow(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため、1を足す
+  const dd = String(date.getDate()).padStart(2, '0');
+  const hh = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  return `${yyyy}${mm}${dd}${hh}${min}`;
 }
