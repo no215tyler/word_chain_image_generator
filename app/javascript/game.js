@@ -427,8 +427,12 @@ function sendWordsToBackend() {
   })
   .catch(error => {
     console.error('エラーが発生しました:', error);
-    const container = document.getElementById('generated-image-container');
-    container.innerHTML = '<p style="color: red;">画像生成エラー<br>時間をおいて試してください</p>'; // エラーメッセージを表示
+    container.innerHTML = `
+    <div class="error-message-container">
+      <p class="error-message">画像生成エラー<br>時間をおいて試してください</p>
+      <div class="error-animation">sorry...🙏🏼</div>
+    </div>
+  `;
   });
 }
 
