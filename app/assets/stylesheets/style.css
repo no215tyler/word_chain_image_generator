@@ -21,6 +21,7 @@ html {
 }
 
 body {
+  font-family: "Zen Maru Gothic", serif;
   margin-bottom: 120px;
   position: relative;
   margin: 0; /* デフォルトのマージンを取り除く */
@@ -89,6 +90,7 @@ body::before {
 }
 
 .key {
+  font-family: "Zen Maru Gothic", serif;
   background-color: #f7f7f7;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -154,6 +156,10 @@ body::before {
   font-size: 15px;
 }
 
+input::-webkit-input-placeholder {
+  font-family: "Zen Maru Gothic", serif;
+}
+
 /* スクロールバーのスタイル（Chrome, Edge, Safari用） */
 #word-chain-status::-webkit-scrollbar {
   height: 8px;
@@ -174,7 +180,7 @@ body::before {
 
 /* 「しりとりの状況」テキストスタイル */
 .word-chain-status-heading {
-  font-family: "Mochiy Pop One", sans-serif;
+  font-family: "Zen Maru Gothic", serif;
   width: 100%; /* 幅を100%に設定して折り返しの起点に */
   font-size: 20px; /* フォントサイズを大きく */
   color: #ffffff; 
@@ -211,6 +217,10 @@ body::before {
 
 .feedback-form-button:hover {
   background-color: #eaeaea; /* ホバー時の背景色を変更 */
+}
+
+button {
+  font-family: "Zen Maru Gothic", serif;
 }
 
 .footer {
