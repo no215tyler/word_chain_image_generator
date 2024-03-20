@@ -402,28 +402,31 @@ function sendWordsToBackend() {
     imageElement.src = `data:image/jpeg;base64,${data.image}`;
     container.appendChild(imageElement); // コンテナに画像を追加
 
-    // 「画像をダウンロード」ボタンが既に存在するかチェック
-    if (!document.querySelector('.download-button')) {
-      // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
-      const downloadButton = document.createElement('button');
-      downloadButton.textContent = '画像をダウンロード';
-      downloadButton.classList.add('download-button'); // CSSクラスの追加
-      // ダウンロード処理
-      downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.href = imageElement.src;
-        const now = new Date();
-        const formattedDate = formatDateToNow(now);
-        const promptForFilename = data.filename;
-        link.download = `word_chain_generated_image_${formattedDate}_(${promptForFilename}).jpg`; // ダウンロード時のファイル名
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
-      // 「画像生成」ボタンの隣にダウンロードボタンを挿入
-      const generateImageButton = document.getElementById('generate-image-button');
-      generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
+    // 既存のダウンロードボタンを削除
+    const existingDownloadButton = document.querySelector('.download-button')
+    if (existingDownloadButton) {
+      existingDownloadButton.parentNode.removeChild(existingDownloadButton);
     }
+    
+    // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
+    const downloadButton = document.createElement('button');
+    downloadButton.textContent = '画像をダウンロード';
+    downloadButton.classList.add('download-button'); // CSSクラスの追加
+    // ダウンロード処理
+    downloadButton.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.href = imageElement.src;
+      const now = new Date();
+      const formattedDate = formatDateToNow(now);
+      const promptForFilename = data.filename;
+      link.download = `word_chain_generated_image_${formattedDate}_(${promptForFilename}).jpg`; // ダウンロード時のファイル名
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+    // 「画像生成」ボタンの隣にダウンロードボタンを挿入
+    const generateImageButton = document.getElementById('generate-image-button');
+    generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
   })
   .catch(error => {
     console.error('エラーが発生しました:', error);
