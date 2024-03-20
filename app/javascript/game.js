@@ -11,7 +11,12 @@ let usedWords = []; // これまでに入力された単語を保持する配列
 let restartOnAction = null; 
 
 document.addEventListener('DOMContentLoaded', () => {
+  toggleHowToPlayPopup(true);
   updateGenerateImageButtonState();
+  // 遊び方表示トリガーボタンのイベントリスナー設定
+  document.getElementById('show-how-to-play').addEventListener('click', function() {
+    toggleHowToPlayPopup(true);
+  });
   const restartAlwaysButton = document.getElementById('restart-game-always');
   restartAlwaysButton.addEventListener('click', restartGame);
 
@@ -407,7 +412,7 @@ function sendWordsToBackend() {
     if (existingDownloadButton) {
       existingDownloadButton.parentNode.removeChild(existingDownloadButton);
     }
-    
+
     // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
     const downloadButton = document.createElement('button');
     downloadButton.textContent = '画像をダウンロード';
@@ -460,3 +465,21 @@ function formatDateToNow(date) {
   const min = String(date.getMinutes()).padStart(2, '0');
   return `${yyyy}${mm}${dd}${hh}${min}`;
 }
+
+// #################################
+//       遊び方表示に関するコード
+// #################################
+// ポップアップ表示/非表示を制御する関数
+function toggleHowToPlayPopup(show) {
+  const popup = document.getElementById('how-to-play-popup');
+  if (show) {
+    popup.style.display = 'flex';
+  } else {
+    popup.style.display = 'none';
+  }
+}
+
+// ポップアップ内の閉じるボタンのイベントリスナー設定
+document.getElementById('close-how-to-play').addEventListener('click', function() {
+  toggleHowToPlayPopup(false);
+});

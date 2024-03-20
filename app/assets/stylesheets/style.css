@@ -205,25 +205,47 @@ input::-webkit-input-placeholder {
   justify-content: right;
   position: fixed;
   align-items: flex-end;
-  right: 5px;
   bottom: 65px;
+  right: 5px;
+}
+
+.how-to-play-trigger-container {
+  left: 5px;
+}
+
+h4 {
+  display: inline-block;
+  color: white;
+  background-color: #333;
+  padding: 3px 20px;
+  transform: skewX(-15deg);
+}
+
+.feedback-form-container, .how-to-play-trigger-container {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  align-items: flex-end;
+  bottom: 65px
 }
 
 .feedback-form-button {
-  margin-top: 20px; 
   padding: 10px 20px;
-  background-color: #f7f7f7;
-  color: rgb(147, 147, 147); 
-  text-align: center; 
-  border-radius: 5px; 
-  text-decoration: none;
-  font-weight: bold;
+  background-color: #FF69B4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Zen Maru Gothic", serif;
   font-size: 13px;
   box-shadow: 2px 2px 2px #888888; /* 影をつける */
+  text-decoration: none;
+  margin-top: 20px;
 }
 
-.feedback-form-button:hover {
-  background-color: #eaeaea; /* ホバー時の背景色を変更 */
+.feedback-form-button:hover, .close-button:hover {
+  background-color: #eaeaea;
+  color: #333;
 }
 
 button {
@@ -350,6 +372,45 @@ button {
   }
 }
 
+/* 遊び方ポップアップのスタイル */
+#how-to-play-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* 他の要素より前面に */
+  overflow: auto;
+}
+
+#how-to-play-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 20px;
+  box-sizing: border-box;
+  width: auto;
+  max-width: 550px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: popUp 0.1s ease-out forwards;
+}
+
+.close-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Zen Maru Gothic", serif;
+}
+
+
 
 /* ------------------------- */
 
@@ -376,7 +437,7 @@ button {
     line-height: 50px;
   }
 
-  .feedback-form-container {
+  .feedback-form-container, .how-to-play-trigger-container {
     bottom: 55px;
   }
 }
@@ -420,8 +481,14 @@ button {
     padding: 5px 15px;
   }
 
-  .feedback-form-container {
+  .feedback-form-container, .how-to-play-trigger-container {
     bottom: 45px;
+  }
+
+  #how-to-play-content {
+    width: 90%;
+    padding: 10px;
+    margin: 350px 10px 10px;
   }
 
   .alternative-font {
@@ -438,6 +505,12 @@ button {
   /* ボタンが画面下部に隠れないように調整 */
   .button-container {
     margin-bottom: 60px; /* フッターの高さや余白を考慮した値に調整 */
+  }
+
+  #how-to-play-content {
+    width: 90%;
+    padding: 10px;
+    margin: 450px 10px 10px;
   }
 }
 
