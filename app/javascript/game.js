@@ -9,6 +9,10 @@ let romajiInput = ''; // ローマ字入力を蓄積する変数
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 let usedWords = []; // これまでに入力された単語を保持する配列
 let restartOnAction = null; 
+const typingSound = new Audio('/sounds/typing_se.mp3');
+typingSound.volume = 0.2;
+const ngSound = new Audio('/sounds/ng_sound.mp3');
+ngSound.volume = 0.2;
 
 document.addEventListener('DOMContentLoaded', () => {
   toggleHowToPlayPopup(true);
@@ -153,6 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   keyboardLayout.addEventListener('click', (event) => {
+    if (event.target.classList.contains('key')) {
+      playTypingSound(); // タイピングサウンドを再生
+    }
     if (event.target.classList.contains('key') && !['shift'].includes(event.target.textContent.toLowerCase())) {
       const keyValue = event.target.textContent.toLowerCase();
       if (keyValue === 'delete') {
@@ -198,6 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 【物理キーボードとの連動】
   document.addEventListener('keydown', (event) => {
+    if (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Enter') {
+      playTypingSound(); // タイピングサウンドを再生
+    }
     if (event.key === 'Backspace') {
       // Backspaceが押された場合の処理
       romajiInput = romajiInput.slice(0, -1);
@@ -308,8 +318,13 @@ seToggleImage.addEventListener('click', () => {
 // SEを再生する関数（既存のplayNgSound関数に変更を加える）
 function playNgSound() {
   if (!isSeEnabled) return; // SEがOFFの場合はここで処理を終了
-  const ngSound = new Audio('/sounds/ng_sound.mp3');
   ngSound.play().catch(e => console.error("Audio play failed:", e));
+}
+
+function playTypingSound() {
+  if (!isSeEnabled) return; // SEがOFFの場合は再生しない
+  typingSound.currentTime = 0; // サウンドを最初から再生
+  typingSound.play().catch(e => console.error("Audio play failed:", e));
 }
 
 // #################################
