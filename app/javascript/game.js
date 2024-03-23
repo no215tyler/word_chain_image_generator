@@ -57,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return { match: 'ん', remainder: romaji.substring(1) };
       }
     }
+
+    // 4文字マッピングの対応
+    if (romaji.length >= 4 && romajiToHiraganaMap[romaji.substring(0, 4)]) {
+      return {
+          match: romajiToHiraganaMap[romaji.substring(0, 4)],
+          remainder: romaji.substring(4)
+      };
+    }
   
     for (let i = romaji.length; i > 0; i--) {
       const subRomaji = romaji.substring(0, i);
@@ -183,10 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
           typingInput.value += match;
           romajiInput = remainder;
         } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
-          // フィードバック関数を使用して不適切な入力をユーザーに通知
-          playNgSound();
-          showFeedback("NG!");
-          romajiInput = ''; // 入力をリセットして新たな入力を受け付ける
+          const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|hhy|mmy|rry|ssh|cch)$/.test(remainder);
+          if (!waitingForMoreInput) {
+            // 不適切な入力をユーザーに通知
+            playNgSound();
+            showFeedback("NG!");
+            romajiInput = ''; // 入力をリセット
+          }
         }
       }
     }
@@ -233,10 +244,13 @@ document.addEventListener('DOMContentLoaded', () => {
           typingInput.value += match;
           romajiInput = remainder;
         } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
-          // 不適切な入力をユーザーに通知
-          playNgSound();
-          showFeedback("NG!");
-          romajiInput = ''; // 入力をリセット
+          const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|hhy|ppy|mmy|rry|ssh|cch)$/.test(remainder);
+          if (!waitingForMoreInput) {
+            // 不適切な入力をユーザーに通知
+            playNgSound();
+            showFeedback("NG!");
+            romajiInput = ''; // 入力をリセット
+          }
         }
         
         // 英字キーのデフォルトの入力処理をキャンセル
