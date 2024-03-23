@@ -112,9 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lastChar === 'ー') {
         lastChar = lastWord.slice(-2, -1);
     }
+    let isMiniStr = /ぁ|ぃ|ぅ|ぇ|ぉ|ゃ|ゅ|ょ|っ/.test(lastChar);
+    
+    if (isMiniStr) {
+      lastChar = lastWord.slice(-2, -1)
+    }
+    isMiniStr = /ぁ|ぃ|ぅ|ぇ|ぉ|ゃ|ゅ|ょ|っ/.test(lastChar);
+    if (isMiniStr) {
+      lastChar = lastWord.slice(-3, -1)
+    }
 
     // 拗音で終わる場合、拗音で次の単語を開始する必要がある
-    let yoonEnd = lastWord.slice(-2);
+    let yoonEnd = ''
+    if (!isMiniStr) {
+      yoonEnd = lastWord.slice(-2);
+    } else {
+      yoonEnd = lastWord.slice(-3, -1);
+    }
     let isYoon = /きゃ|きゅ|きょ|しゃ|しゅ|しょ|しぇ|ちゃ|ちゅ|ちょ|にゃ|にゅ|にょ|ひゃ|ひゅ|ひょ|ふぁ|ふぃ|ふゅ|ふぇ|ふぉ|みゃ|みゅ|みょ|りゃ|りゅ|りょ|ぎゃ|ぎゅ|ぎょ|じゃ|じゅ|じょ|びゃ|びゅ|びょ|ぴゃ|ぴゅ|ぴょ|てぃ|でぃ|てゃ|でゃ|てゅ|でゅ|てょ|でょ|てぇ|でぇ/.test(yoonEnd);
 
     if (normalizedUsedWords.length > 0 && !((isYoon && normalizedInput.startsWith(yoonEnd)) || (!isYoon && normalizedInput.startsWith(lastChar)))) {
