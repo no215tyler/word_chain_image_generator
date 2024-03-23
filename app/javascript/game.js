@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastChar = lastWord.slice(-2, -1);
     }
     let isMiniStr = /ぁ|ぃ|ぅ|ぇ|ぉ|ゃ|ゅ|ょ|っ/.test(lastChar);
-    
+
     if (isMiniStr) {
       lastChar = lastWord.slice(-2, -1)
     }
@@ -493,7 +493,7 @@ document.getElementById('generate-image-button').addEventListener('click', funct
 
 function updateGenerateImageButtonState() {
   const generateImageButton = document.getElementById('generate-image-button');
-  if (usedWords.length === 0) {
+  if (usedWords.length < 5) {
     generateImageButton.disabled = true; // 配列が空の場合、ボタンを非活性化
   } else {
     generateImageButton.disabled = false; // 配列に要素がある場合、ボタンを活性化
