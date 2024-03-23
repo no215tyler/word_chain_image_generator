@@ -10,8 +10,9 @@ class StableDiffusionService
     "Authorization" => ENV['STABLE_DIFFUSION_API_KEY']
   }
   TIMEOUT_SECONDS = 60 # タイムアウト時間の設定
+  MAX_RETRY_ATTEMPTS = 5 # 最大リトライ回数
 
-  def self.query(prompt, negative_prompt = nil, start_time = Time.now)
+  def self.query(prompt, negative_prompt = nil, start_time = Time.now, retry_count = 0)
     payload = if negative_prompt
                 { inputs: prompt, parameters: { negative_prompt: negative_prompt } }
               else
@@ -26,18 +27,20 @@ class StableDiffusionService
         return response.body
       when 404
         raise StandardError, "リソースが見つかりません。"
-      when 500, 503 # 500 および 503 エラーを再試行対象とする
+      when 500, 503
         raise RetryableError, "サーバー内部エラーまたはサービス利用不可エラーが発生しました。ステータスコード: #{response.code}"
       else
         raise StandardError, "API呼び出しで予期しないエラーが発生しました。ステータスコード: #{response.code}"
       end
     rescue Net::ReadTimeout, HTTParty::Error, RetryableError => e
-      if Time.now - start_time < TIMEOUT_SECONDS
-        puts "リトライします。エラー: #{e.message}"
-        sleep 5 # 少し待ってから再試行
-        retry
+      retry_count += 1
+      if retry_count <= MAX_RETRY_ATTEMPTS
+        sleep_time = 2 ** retry_count # 指数バックオフでの待機時間を設定
+        puts "リトライします。エラー: #{e.message}、リトライ回数: #{retry_count}、次のリトライまでの待機時間: #{sleep_time}秒"
+        sleep sleep_time
+        query(prompt, negative_prompt, start_time, retry_count)
       else
-        raise StandardError, "最終的にリクエストがタイムアウトしました: #{e.message}"
+        raise StandardError, "リトライの最大試行回数に達しました: #{e.message}"
       end
     rescue StandardError => e
       raise StandardError, "API呼び出しでエラーが発生しました: #{e.message}"
