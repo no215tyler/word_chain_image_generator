@@ -458,8 +458,9 @@ button {
 
 #romaji-to-hiragana-table td {
   border: 1px solid #ddd;
-  text-align: left;
+  text-align: center;
   padding: 8px;
+  white-space: nowrap;
 }
 
 #romaji-to-hiragana-table th {
