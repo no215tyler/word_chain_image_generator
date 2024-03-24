@@ -10,6 +10,7 @@
     </header>
     <!-- 遊び方ポップアップ -->
     <div id="how-to-play-popup">
+      <div id="close-how-to-play-icon" class="close-icon">×</div>
       <div id="how-to-play-content">
         <h2>あそびかた</h2>
         <h4>アプリの概要</h4>
@@ -37,15 +38,18 @@
     </div>
     <!-- ローマ字対応表ポップアップ -->
     <div id="romaji-map-popup" style="display: none;">
+      <div id="close-icon" class="close-icon">×</div>
       <div id="romaji-map-content">
         <h2>ローマ字対応表</h2>
-        <table id="romaji-to-hiragana-table">
+        <div class="table-responsive">
+          <table id="romaji-to-hiragana-table">
 
-          <tbody>
-            <!-- JavaScriptで動的に行を追加 -->
-          </tbody>
-        </table>
-        <button id="close-romaji-map" class="close-button">閉じる</button>
+            <tbody>
+              <!-- JavaScriptで動的に行を追加 -->
+            </tbody>
+          </table>
+          <button id="close-romaji-map" class="close-button">閉じる</button>
+        </div>
       </div>
     </div>
     <div id="typing-game">

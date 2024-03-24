@@ -420,6 +420,7 @@ button {
 }
 
 #romaji-map-popup {
+  position: relative;
   display: none;
   position: fixed;
   top: 0;
@@ -468,6 +469,27 @@ button {
 .bottom-button-container {
   display: flex;
   justify-content: space-around;
+}
+
+.close-icon {
+  background-color: rgba(248, 248, 248, 0.5);
+  color: black;
+  border-radius: 50px;
+  position: fixed;
+  top: 15px;
+  right: 25px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 100%;
+  text-align: center;
+  z-index: 11;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ------------------------- */

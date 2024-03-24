@@ -572,3 +572,5 @@ function generateRomajiToHiraganaTable() {
 // 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
 document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
 document.getElementById('close-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(false));
+document.getElementById('close-icon').addEventListener('click', () => toggleRomajiMapPopup(false));
+document.getElementById('close-how-to-play-icon').addEventListener('click', () => toggleHowToPlayPopup(false));
