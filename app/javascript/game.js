@@ -526,3 +526,49 @@ function toggleHowToPlayPopup(show) {
 document.getElementById('close-how-to-play').addEventListener('click', function() {
   toggleHowToPlayPopup(false);
 });
+
+// ローマ字対応表ポップアップの表示切替
+function toggleRomajiMapPopup(show) {
+  const popup = document.getElementById('romaji-map-popup');
+  if (show) {
+    popup.style.display = 'flex';
+    generateRomajiToHiraganaTable();
+  } else {
+    popup.style.display = 'none';
+  }
+}
+
+function generateRomajiToHiraganaTable() {
+  const vowels = ['a', 'i', 'u', 'e', 'o'];
+  const tableBody = document.getElementById('romaji-to-hiragana-table').querySelector('tbody');
+  tableBody.innerHTML = ''; // 既存のテーブル内容をクリア
+  
+  // ローマ字の配列を母音でフィルタリングしてグルーピング
+  const groupedRomaji = vowels.map(vowel => Object.entries(romajiToHiraganaMap).filter(([romaji]) => romaji.endsWith(vowel)));
+
+  // 最大の行数を求める
+  const maxRows = Math.max(...groupedRomaji.map(group => group.length));
+
+  for (let rowIndex = 0; rowIndex < maxRows; rowIndex++) {
+    const row = tableBody.insertRow();
+    for (let vowelIndex = 0; vowelIndex < vowels.length; vowelIndex++) {
+      const romajiPair = groupedRomaji[vowelIndex][rowIndex];
+      if (romajiPair) {
+        const [romaji, hiragana] = romajiPair;
+        const cell = row.insertCell();
+        cell.textContent = `${romaji}: ${hiragana}`;
+        cell.colSpan = 1; // 母音ごとに2列を使用
+      } else {
+        // 対応するローマ字がない場合は空のセルを追加
+        const cell = row.insertCell();
+        cell.textContent = '';
+        cell.colSpan = 1;
+      }
+    }
+  }
+}
+
+
+// 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
+document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
+document.getElementById('close-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(false));
