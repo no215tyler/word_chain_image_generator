@@ -24,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const restartAlwaysButton = document.getElementById('restart-game-always');
   restartAlwaysButton.addEventListener('click', restartGame);
 
+  // 単語数カウンタの要素を作成
+  const wordCountContainer = document.createElement('div');
+  wordCountContainer.id = 'word-count';
+  document.getElementById('word-chain-status').before(wordCountContainer);
+  updateWordCount();
+
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
     feedbackMessage.innerHTML = msg.replace(/\n/g, '<br>'); // メッセージを表示、\n を <br> に置換
@@ -176,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 最後の矢印要素を更新
     lastArrowElement = arrowElement;
     wordChainStatus.scrollLeft = wordChainStatus.scrollWidth;
+
+    // 単語数カウンタを更新
+    updateWordCount();
   }
 
   keyboardLayout.addEventListener('click', (event) => {
@@ -294,6 +303,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// 単語数カウンタを更新する関数
+function updateWordCount() {
+  const wordCount = usedWords.length; // 使用された単語の数
+  const wordCountContainer = document.getElementById('word-count');
+  wordCountContainer.textContent = `現在の単語数: ${wordCount}`;
+}
 
 function toggleKana(text) {
   // ひらがなとカタカナの対応表
@@ -427,6 +442,7 @@ function restartGame() {
     wordChainStatus.removeChild(wordChainStatus.firstChild);
   }
   updateGenerateImageButtonState();
+  updateWordCount();
 }
 
 function sendWordsToBackend() {
