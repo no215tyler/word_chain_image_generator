@@ -14,4 +14,7 @@ class GamesController < ApplicationController
     image_data = Base64.encode64(image_bytes)
     render json: { image: image_data, filename: filename }
   end
+
+  def term_of_service
+  end
 end

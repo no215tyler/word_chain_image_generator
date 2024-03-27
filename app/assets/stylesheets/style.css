@@ -21,7 +21,13 @@ html {
   min-height: 100%;
 }
 
+.contents {
+  flex: 1; 
+}
+
 body {
+  display: flex;
+  flex-direction: column;
   font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   margin-bottom: 120px;
   position: relative;
@@ -207,6 +213,7 @@ input::-webkit-input-placeholder {
   align-items: flex-end;
   bottom: 65px;
   right: 5px;
+  z-index: 5;
 }
 
 .how-to-play-trigger-container {
@@ -226,7 +233,8 @@ h4 {
   justify-content: center;
   position: fixed;
   align-items: flex-end;
-  bottom: 65px
+  bottom: 65px;
+  z-index: 5;
 }
 
 .romaji-map-trigger-container {
@@ -236,6 +244,7 @@ h4 {
   align-items: flex-end;
   bottom: 110px;  
   left: 5px;
+  z-index: 5;
 }
 
 .feedback-form-button {
@@ -263,14 +272,24 @@ button {
 
 .footer {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: relative;
+  margin-top: auto;
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 60px;
+  min-height: 60px;
   background-color: #f2f2f2;
+  line-height: normal;
+}
+.terms {
+  font-size: 13px;
+}
+
+.copyright {
+  display: flex;
 }
 /* ゲーム終了ポップアップのスタイル */
 
@@ -285,6 +304,7 @@ button {
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.5 ease-out forwards;
+  z-index: 9;
 }
 
 #game-over-content {
@@ -552,7 +572,7 @@ button {
 
   .footer {
     height: 50px;
-    line-height: 50px;
+    line-height: normal;
   }
 
   .feedback-form-container, .how-to-play-trigger-container, .romaji-map-trigger-container {
@@ -596,7 +616,7 @@ button {
 
   .footer {
     height: 40px;
-    line-height: 40px;
+    line-height: normal;
   }
 
   .feedback-form-button {
@@ -604,11 +624,11 @@ button {
   }
 
   .feedback-form-container, .how-to-play-trigger-container {
-    bottom: 45px;
+    bottom: 65px;
   }
 
   .romaji-map-trigger-container {
-    bottom: 80px;
+    bottom: 100px;
   }
 
   #how-to-play-content {
@@ -644,12 +664,4 @@ button {
     margin: 10px;
     top: 10px;
   }
-}
-
-/* 既存のフッターのスタイルを確認し、必要に応じて調整 */
-.footer {
-  position: fixed; /* or `absolute`, 必要に応じて変更 */
-  left: 0;
-  bottom: 0;
-  width: 100%;
 }

@@ -5,87 +5,105 @@
       <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
   <body>
-    <header class="header">
-      <h1>しりとり画像ジェネレーター</h1>
-    </header>
-    <!-- 遊び方ポップアップ -->
-    <div id="how-to-play-popup">
-      <div id="close-how-to-play-icon" class="close-icon">×</div>
-      <div id="how-to-play-content">
-        <h2>あそびかた</h2>
-        <h4>アプリの概要</h4>
-        <p style="text-align: left;">ローマ字タイピング入力練習のサポートをする小学校低学年向けのアプリとして開発されました。しりとりをローマ字タイピングで入力を行い、［画像生成］ボタンを押すとしりとりの結果に応じた画像が作られます。<br>どんな画像ができあがるか楽しみながらタイピング練習をしましょう！</p>
-        <h4>遊び方・ルール</h4>
-        <ul style="text-align: left;">
-          <li>しりとりの単語をうちこみましょう</li>
-          <li>「3文字しばり」などルールをつくって遊んでみてね</li>
-          <li>単語を5個以上つないで画像生成ボタンを押すと画像ができるよ</li>
-        </ul>
-        <h4>注意書き</h4>
-        <ul style="text-align: left;">
-          <li>物理キーボードは英字モードのみ入力をサポートしています。
-            <ul>
-              <li>英字モードでプレイしてください。</li>
-              <li>かな入力モードはサポート外です。</li>
-              <li>仮想キーボードはスマートフォン用です。<br>数字や記号など一部入力できません。</li>
-            </ul>
-          <li>画像生成は60秒経過するとタイムアウトします。</li>
-          <li>画像生成エラーの際は時間を置いて再度試してください。</li>
-          <li>音量のON/OFFはスピーカーアイコンのクリックで行えます。</li>
-        </ul>
-        <button id="close-how-to-play" class="close-button">とじる</button>
-      </div>
-    </div>
-    <!-- ローマ字対応表ポップアップ -->
-    <div id="romaji-map-popup" style="display: none;">
-      <div id="close-icon" class="close-icon">×</div>
-      <div id="romaji-map-content">
-        <h2>ローマ字対応表</h2>
-        <div class="table-responsive">
-          <table id="romaji-to-hiragana-table">
-            <colgroup>
-              <col style="width: 100px;">
-              <col style="width: 100px;">
-              <col style="width: 100px;">
-              <col style="width: 100px;">
-              <col style="width: 100px;">
-              <!-- 必要に応じて追加の<col>タグをここに挿入 -->
-            </colgroup>
-
-            <tbody>
-              <!-- JavaScriptで動的に行を追加 -->
-            </tbody>
-          </table>
-          <button id="close-romaji-map" class="close-button">閉じる</button>
+    <div class="contents">
+      <header class="header">
+        <h1><%= link_to 'しりとり画像ジェネレーター', root_path, style: 'text-decoration: none;' 'color: #fff;' %></h1>
+      </header>
+      <!-- 遊び方ポップアップ -->
+      <div id="how-to-play-popup">
+        <div id="close-how-to-play-icon" class="close-icon">×</div>
+        <div id="how-to-play-content">
+          <h2>あそびかた</h2>
+          <h4>アプリの概要</h4>
+          <p style="text-align: left;">ローマ字タイピング入力練習のサポートをする小学校低学年向けのアプリとして開発されました。しりとりをローマ字タイピングで入力を行い、［画像生成］ボタンを押すとしりとりの結果に応じた画像が作られます。<br>どんな画像ができあがるか楽しみながらタイピング練習をしましょう！</p>
+          <h4>遊び方・ルール</h4>
+          <ul style="text-align: left;">
+            <li>しりとりの単語をうちこみましょう</li>
+            <li>「3文字しばり」などルールをつくって遊んでみてね</li>
+            <li>単語を5個以上つないで画像生成ボタンを押すと画像ができるよ</li>
+          </ul>
+          <h4>注意書き</h4>
+          <ul style="text-align: left;">
+            <li>物理キーボードは英字モードのみ入力をサポートしています。
+              <ul>
+                <li>英字モードでプレイしてください。</li>
+                <li>かな入力モードはサポート外です。</li>
+                <li>仮想キーボードはスマートフォン用です。<br>数字や記号など一部入力できません。</li>
+              </ul>
+            <li>画像生成は60秒経過するとタイムアウトします。</li>
+            <li>画像生成エラーの際は時間を置いて再度試してください。</li>
+            <li>音量のON/OFFはスピーカーアイコンのクリックで行えます。</li>
+          </ul>
+          <button id="close-how-to-play" class="close-button">とじる</button>
         </div>
       </div>
-    </div>
-    <div id="typing-game">
-      <div id="word-chain-status">
-        <div class="word-chain-status-heading"><b>しりとりフィールド</b></div>
-        <div id="word-chain-status-container">
+      <!-- ローマ字対応表ポップアップ -->
+      <div id="romaji-map-popup" style="display: none;">
+        <div id="close-icon" class="close-icon">×</div>
+        <div id="romaji-map-content">
+          <h2>ローマ字対応表</h2>
+          <div class="table-responsive">
+            <table id="romaji-to-hiragana-table">
+              <colgroup>
+                <col style="width: 100px;">
+                <col style="width: 100px;">
+                <col style="width: 100px;">
+                <col style="width: 100px;">
+                <col style="width: 100px;">
+                <!-- 必要に応じて追加の<col>タグをここに挿入 -->
+              </colgroup>
 
+              <tbody>
+                <!-- JavaScriptで動的に行を追加 -->
+              </tbody>
+            </table>
+            <button id="close-romaji-map" class="close-button">閉じる</button>
+          </div>
         </div>
       </div>
-      <input type="text" id="typing-input" placeholder="英字モードであそんでね" autofocus>
-      <div id="keyboard-container">
-        <%= render 'keyboard_layouts' %>
-        <img id="se-toggle-image" src="./images/volume_on.jpg" alt="Sound Toggle" />
+      <div id="typing-game">
+        <div id="word-chain-status">
+          <div class="word-chain-status-heading"><b>しりとりフィールド</b></div>
+          <div id="word-chain-status-container">
+
+          </div>
+        </div>
+        <input type="text" id="typing-input" placeholder="英字モードであそんでね" autofocus>
+        <div id="keyboard-container">
+          <%= render 'keyboard_layouts' %>
+          <img id="se-toggle-image" src="./images/volume_on.jpg" alt="Sound Toggle" />
+        </div>
+        <div class="button-container">
+          <button id="generate-image-button">画像生成</button>
+          <button id="restart-game-always">もういちど</button>
+        </div>
+        <div id="generated-image-container" style="margin-top: 20px;">
+          <!-- 生成画像表示 -->
+        </div>
+          <p id="feedback-message"></p>
       </div>
-      <div class="button-container">
-        <button id="generate-image-button">画像生成</button>
-        <button id="restart-game-always">もういちど</button>
+      <div id="game-over-popup" class="hidden" style="display: none;">
+        <div id="game-over-content">
+          <p>ゲーム終了！<br>最後の文字が「ん」で終わってるよ！</p>
+          <button id="generate-image-after-game">画像生成</button>
+          <button id="restart-game">もういちど</button>
+        </div>
       </div>
-      <div id="generated-image-container" style="margin-top: 20px;">
-        <!-- 生成画像表示 -->
-      </div>
-        <p id="feedback-message"></p>
-    </div>
-    <div id="game-over-popup" class="hidden" style="display: none;">
-      <div id="game-over-content">
-        <p>ゲーム終了！<br>最後の文字が「ん」で終わってるよ！</p>
-        <button id="generate-image-after-game">画像生成</button>
-        <button id="restart-game">もういちど</button>
+      <div class="bottom-button-container">
+        <div class="feedback-form-container">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSduy0UDQSbhc-GTdmoIorxzbrkUKFt20qBBhIgoDkK_N4onxg/viewform" 
+            target="_blank"
+            class="feedback-form-button">
+            フィードバックを送信
+          </a>
+        </div>
+        <!-- ローマ字対応表表示ボタン -->
+        <div class="romaji-map-trigger-container">
+          <button id="show-romaji-map" class="feedback-form-button">ローマ字表</button>
+        </div>
+        <div class="how-to-play-trigger-container">
+          <button id="show-how-to-play" class="feedback-form-button">あそびかた</button>
+        </div>
       </div>
     </div>
   </body>
