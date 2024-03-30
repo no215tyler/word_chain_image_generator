@@ -1,11 +1,6 @@
 import { romajiToHiraganaMap } from "romajiToHiraganaMap"; 
 import { kanaMap } from "kana_conversion";
 // 【グローバル変数】
-const typingInput = document.getElementById('typing-input');
-const keyboardLayout = document.getElementById('keyboard-layout');
-const feedbackMessage = document.getElementById('feedback-message'); // タイピング正誤判定のフィードバック
-const wordChainStatus = document.getElementById('word-chain-status-container'); // しりとり状況表示領域の要素
-let romajiInput = ''; // ローマ字入力を蓄積する変数
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 let usedWords = []; // これまでに入力された単語を保持する配列
 let restartOnAction = null; 
@@ -13,16 +8,32 @@ const typingSound = new Audio('/sounds/typing_se.mp3');
 typingSound.volume = 0.2;
 const ngSound = new Audio('/sounds/ng_sound.mp3');
 ngSound.volume = 0.2;
+let keyListenerAdded = false;
 
-document.addEventListener('DOMContentLoaded', () => {
-  toggleHowToPlayPopup(true);
+document.addEventListener('turbo:load', setupGameListeners);
+function setupGameListeners() {
+  let romajiInput = ''; // ローマ字入力を蓄積する変数
+  const typingInput = document.getElementById('typing-input');
+  typingInput.value = '';
+  lastArrowElement = null;
+  usedWords = []; // これまでに入力された単語を保持する配列
+  restartOnAction = null; 
+  
+  // toggleHowToPlayPopup(true); // あそびかたポップアップを読み込み時に強制表示
   updateGenerateImageButtonState();
+  // 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
+  document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
+  document.getElementById('close-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(false));
+  document.getElementById('close-icon').addEventListener('click', () => toggleRomajiMapPopup(false));
+  document.getElementById('close-how-to-play-icon').addEventListener('click', () => toggleHowToPlayPopup(false));
+  document.getElementById('close-how-to-play').addEventListener('click', () => toggleHowToPlayPopup(false));
   // 遊び方表示トリガーボタンのイベントリスナー設定
-  document.getElementById('show-how-to-play').addEventListener('click', function() {
-    toggleHowToPlayPopup(true);
-  });
+  document.getElementById('show-how-to-play').addEventListener('click', () => toggleHowToPlayPopup(true));
   const restartAlwaysButton = document.getElementById('restart-game-always');
-  restartAlwaysButton.addEventListener('click', restartGame);
+  restartAlwaysButton.addEventListener('click', () => {
+    restartGame();
+    romajiInput = '';
+  });
 
   // 単語数カウンタの要素を作成
   const wordCountContainer = document.createElement('div');
@@ -32,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // フィードバックメッセージを表示する関数
   function showFeedback(msg) {
+    const feedbackMessage = document.getElementById('feedback-message');
     feedbackMessage.innerHTML = msg.replace(/\n/g, '<br>'); // メッセージを表示、\n を <br> に置換
     setTimeout(() => {
       feedbackMessage.textContent = ''; // 2秒後にメッセージを消去
@@ -101,7 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function isValidShiritoriWord(word) {
     // 入力された単語を平仮名に正規化
     let normalizedInput = normalizeKana(word);
-
     // 既に使われた単語リストを平仮名に正規化
     let normalizedUsedWords = usedWords.map(w => normalizeKana(w));
 
@@ -152,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // 「return」キーがクリックされた場合の処理
+  // 「return」キーがクリックされた場合の処理（176）
   function addPhraseAndArrow(phrase) {
     // 入力された単語がしりとりのルールに適合しているかチェック
     if (!isValidShiritoriWord(phrase)) return;
@@ -165,13 +176,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lastArrowElement) {
       lastArrowElement.style.display = 'inline-block'; // CSSで非表示にしていた場合
     }
-
+    
     // フレーズの追加
+    const wordChainStatus = document.getElementById('word-chain-status-container'); // しりとり状況表示領域の要素
     const phraseElement = document.createElement('div');
     phraseElement.textContent = phrase;
     phraseElement.className = 'word-item';
     wordChainStatus.appendChild(phraseElement);
-
+    
     // 新しい矢印の作成（ただし表示はしない）
     const arrowElement = document.createElement('div');
     arrowElement.textContent = '▶︎';
@@ -187,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateWordCount();
   }
 
-  keyboardLayout.addEventListener('click', (event) => {
+  document.getElementById('keyboard-layout').addEventListener('click', (event) => {
     if (event.target.classList.contains('key')) {
       playTypingSound(); // タイピングサウンドを再生
     }
@@ -226,72 +238,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  typingInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      if (typingInput.value.trim().length > 0) { // 空でない入力がある場合のみ処理
-        addPhraseAndArrow(typingInput.value); // フレーズと矢印の追加
-        typingInput.value = ''; // typing-input内の入力文字をリセット
-        romajiInput = ''; // ローマ字入力もリセット
-        event.preventDefault(); // フォーム送信の防止
-      }
-    }
-  });
-
   // 【物理キーボードとの連動】
-  document.addEventListener('keydown', (event) => {
-    if (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Enter') {
-      playTypingSound(); // タイピングサウンドを再生
-    }
-    if (event.key === 'Backspace') {
-      // Backspaceが押された場合の処理
-      romajiInput = romajiInput.slice(0, -1);
-      typingInput.value = typingInput.value.slice(0, -1);
-      event.preventDefault(); // フォームの送信を防ぐ
-    } else if (event.key === 'Enter') {
-      // Enterが押された場合の処理
-      if (typingInput.value.trim().length > 0) {
-        addPhraseAndArrow(typingInput.value);
-        typingInput.value = '';
-        romajiInput = '';
+  function setupKeyListener() {
+    function handleKeyDown(event) {
+      const typingInput = document.getElementById('typing-input');
+      if (event.key.length === 1 || event.key === 'Backspace' || event.key === 'Enter') {
+        playTypingSound(); // タイピングサウンドを再生
       }
-      event.preventDefault(); // フォームの送信を防ぐ
-    } else {
-      // 英字キーが押された場合の処理
-      const key = event.key.toLowerCase();
-      // 特定のキー(コントロールキーなど)を無視
-      if (key.length === 1 && key.match(/[a-z]/i)) {
-        romajiInput += key;
-        let { match, remainder } = convertRomajiToHiragana(romajiInput);
-
-        if (match) {
-          typingInput.value += match;
-          romajiInput = remainder;
-        } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
-          const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|hhy|ppy|mmy|rry|ssh|cch)$/.test(remainder);
-          if (!waitingForMoreInput) {
-            // 不適切な入力をユーザーに通知
-            playNgSound();
-            showFeedback("NG!");
-            romajiInput = ''; // 入力をリセット
-          }
+      if (event.key === 'Backspace') {
+        // Backspaceが押された場合の処理
+        romajiInput = romajiInput.slice(0, -1);
+        typingInput.value = typingInput.value.slice(0, -1);
+        event.preventDefault(); // フォームの送信を防ぐ
+      } else if (event.key === 'Enter') {
+        // Enterが押された場合の処理
+        if (typingInput.value.trim().length > 0) {
+          addPhraseAndArrow(typingInput.value);
+          typingInput.value = '';
+          romajiInput = '';
         }
-        
-        // 英字キーのデフォルトの入力処理をキャンセル
-        event.preventDefault();        
+        event.preventDefault(); // フォームの送信を防ぐ
+      } else {
+        // 英字キーが押された場合の処理
+        const key = event.key.toLowerCase();
+        // 特定のキー(コントロールキーなど)を無視
+        if (key.length === 1 && key.match(/[a-z]/i)) {
+          romajiInput += key;
+          let { match, remainder } = convertRomajiToHiragana(romajiInput);
+          if (match) {
+            typingInput.value += match;
+            romajiInput = remainder;
+          } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
+            const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|hhy|ppy|mmy|rry|ssh|cch)$/.test(remainder);
+            if (!waitingForMoreInput) {
+              // 不適切な入力をユーザーに通知
+              playNgSound();
+              showFeedback("NG!");
+              romajiInput = ''; // 入力をリセット
+            }
+          }
+          
+          // 英字キーのデフォルトの入力処理をキャンセル
+          event.preventDefault();        
+        }
+
+        if (key === "-") { 
+          event.preventDefault(); // デフォルトのイベントをキャンセル
+          typingInput.value += "ー"; 
+        }
       }
 
-      if (key === "-") { 
-        event.preventDefault(); // デフォルトのイベントをキャンセル
-        typingInput.value += "ー"; 
+      // 物理キーボードのキー入力をハイライト
+      const virtualKeyElement = document.querySelector(`.key[data-key="${event.key.toLowerCase()}"]`);
+      if (virtualKeyElement) {
+        virtualKeyElement.classList.add('active');
       }
+    };
+    
+    if (!keyListenerAdded) {
+      document.addEventListener('keydown', handleKeyDown);
+      keyListenerAdded = true; // イベントリスナーが登録されたことをフラグでマーク
     }
-
-    // 物理キーボードのキー入力をハイライト
-    const virtualKeyElement = document.querySelector(`.key[data-key="${event.key.toLowerCase()}"]`);
-    if (virtualKeyElement) {
-      virtualKeyElement.classList.add('active');
-    }
-  });
+  }
+  setupKeyListener();
 
   document.addEventListener('keyup', (event) => {
     // キーが離されたときのハイライト削除
@@ -301,292 +310,281 @@ document.addEventListener('DOMContentLoaded', () => {
       virtualKeyElement.classList.remove('active');
     }
   });
-});
 
-// 単語数カウンタを更新する関数
-function updateWordCount() {
-  const wordCount = usedWords.length; // 使用された単語の数
-  const wordCountContainer = document.getElementById('word-count');
-  wordCountContainer.textContent = `現在の単語数: ${wordCount}`;
-}
-
-function toggleKana(text) {
-  // ひらがなとカタカナの対応表
-  const hiragana = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉゃゅょっゔ";
-  const katakana = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォャュョッヴ";
-  
-  let convertedText = "";
-  for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      if (hiragana.includes(char)) {
-          // ひらがなからカタカナへ変換
-          const index = hiragana.indexOf(char);
-          convertedText += katakana[index];
-      } else if (katakana.includes(char)) {
-          // カタカナからひらがなへ変換
-          const index = katakana.indexOf(char);
-          convertedText += hiragana[index];
-      } else {
-          // その他の文字はそのまま
-          convertedText += char;
-      }
-  }
-  return convertedText;
-}
-
-// スペースキー押下時のイベントリスナー
-document.addEventListener('keydown', function(event) {
-  if (event.key === ' ') { // スペースキーが押された場合
-      const currentText = typingInput.value;
-      const toggledText = toggleKana(currentText);
-      typingInput.value = toggledText; // 変換後のテキストを入力フィールドに設定
-      event.preventDefault(); // スペースキーのデフォルトの動作（スペースの挿入）を防ぐ
-  }
-});
-
-// #########################
-//     SEのON / OFFトグル
-// #########################
-// SEのON/OFFを切り替えるイメージ要素
-const seToggleImage = document.getElementById('se-toggle-image'); // HTMLにid="se-toggle-image"のimg要素を追加する
-
-let isSeEnabled = true; // SEの再生状態を管理
-
-// イメージクリックイベントの定義
-seToggleImage.addEventListener('click', () => {
-  isSeEnabled = !isSeEnabled; // SEの状態を切り替え
-  seToggleImage.src = isSeEnabled ? './images/volume_on.jpg' : './images/volume_off.jpg'; // イメージのソースを更新
-});
-
-// SEを再生する関数（既存のplayNgSound関数に変更を加える）
-function playNgSound() {
-  if (!isSeEnabled) return; // SEがOFFの場合はここで処理を終了
-  ngSound.play().catch(e => console.error("Audio play failed:", e));
-}
-
-function playTypingSound() {
-  if (!isSeEnabled) return; // SEがOFFの場合は再生しない
-  typingSound.currentTime = 0; // サウンドを最初から再生
-  typingSound.play().catch(e => console.error("Audio play failed:", e));
-}
-
-// #################################
-//       ゲーム終了時の処理
-// #################################
-
-// 画像生成のイベントリスナーとして使用する名前付き関数
-function handleGenerateImageClick() {
-  // ポップアップを閉じる
-  document.getElementById('game-over-popup').style.display = 'none';
-  // 画像生成を開始する
-  sendWordsToBackend();
-}
-
-function gameOver() {
-  const gameOverPopup = document.getElementById('game-over-popup');
-  gameOverPopup.style.display = 'flex'; // ポップアップを表示
-
-  // 「画像生成」ボタンに対するイベントリスナー
-  const generateImageButton = document.getElementById('generate-image-after-game');
-
-  generateImageButton.removeEventListener('click', handleGenerateImageClick);
-  generateImageButton.addEventListener('click', handleGenerateImageClick);
-
-  const restartButton = document.getElementById('restart-game');
-  restartButton.focus(); // リスタートボタンにフォーカスをあてる
-  // クリックまたはEnterキー押下でリスタートするイベントリスナーを追加
-  restartOnAction = function(event) {
-    if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
-      restartGame();
-
-      // イベントリスナーを削除
-      restartButton.removeEventListener('click', restartOnAction);
-      document.removeEventListener('keydown', restartOnAction);
+  // スペースキー押下時のイベントリスナー
+  document.addEventListener('keydown', function(event) {
+    if (event.key === ' ') { // スペースキーが押された場合
+        const currentText = typingInput.value;
+        const toggledText = toggleKana(currentText);
+        typingInput.value = toggledText; // 変換後のテキストを入力フィールドに設定
+        event.preventDefault(); // スペースキーのデフォルトの動作（スペースの挿入）を防ぐ
     }
-  };
-
-  restartButton.addEventListener('click', restartOnAction);
-  document.addEventListener('keydown', restartOnAction);
-}
-
-
-// #################################
-//       ゲームをリスタートする関数
-// #################################
-function restartGame() {
-  const gameOverPopup = document.getElementById('game-over-popup');
-  gameOverPopup.style.display = 'none'; // ポップアップを非表示
-
-  // イベントリスナーの削除
-  const restartButton = document.getElementById('restart-game');
-  restartButton.removeEventListener('click', restartOnAction);
-  document.removeEventListener('keydown', restartOnAction);
-
-  // ゲームの状態を初期化
-  const container = document.getElementById('generated-image-container');
-  const downloadButtons = document.getElementsByClassName('download-button');
-  container.innerHTML = '';
-  typingInput.value = '';
-  romajiInput = '';
-  usedWords = [];
-  if (lastArrowElement) {
-    lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
-    lastArrowElement = null;
-  }
-  if (downloadButtons[0]) { // 存在チェック
-    downloadButtons[0].parentNode.removeChild(downloadButtons[0]);
-  }
-
-  // しりとりの状況を表示するコンテナをクリア
-  while (wordChainStatus.firstChild) {
-    wordChainStatus.removeChild(wordChainStatus.firstChild);
-  }
-  updateGenerateImageButtonState();
-  updateWordCount();
-}
-
-function sendWordsToBackend() {
-  const container = document.getElementById('generated-image-container');
-  container.innerHTML = '<div class="loader"></div>';
-  // しりとり結果の単語の配列をJSON形式でバックエンドに送信
-  fetch("/games/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRF-Token": document.querySelector("[name='csrf-token']").getAttribute("content")
-    },
-    body: JSON.stringify({ words: usedWords })
-  })
-  .then(response => response.json())
-  .then(data => {
-    container.innerHTML = ''; // ローディングインジケーターをクリア
-
-    // バックエンドから返された画像データを表示
-    const imageElement = document.createElement('img');
-    imageElement.src = `data:image/jpeg;base64,${data.image}`;
-    container.appendChild(imageElement); // コンテナに画像を追加
-
-    // 既存のダウンロードボタンを削除
-    const existingDownloadButton = document.querySelector('.download-button')
-    if (existingDownloadButton) {
-      existingDownloadButton.parentNode.removeChild(existingDownloadButton);
-    }
-
-    // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
-    const downloadButton = document.createElement('button');
-    downloadButton.textContent = '画像をダウンロード';
-    downloadButton.classList.add('download-button'); // CSSクラスの追加
-    // ダウンロード処理
-    downloadButton.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.href = imageElement.src;
-      const now = new Date();
-      const formattedDate = formatDateToNow(now);
-      const promptForFilename = data.filename;
-      link.download = `word_chain_generated_image_${formattedDate}_(${promptForFilename}).jpg`; // ダウンロード時のファイル名
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-    // 「画像生成」ボタンの隣にダウンロードボタンを挿入
-    const generateImageButton = document.getElementById('generate-image-button');
-    generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
-  })
-  .catch(error => {
-    console.error('エラーが発生しました:', error);
-    container.innerHTML = `
-    <div class="error-message-container">
-      <p class="error-message">画像生成エラー<br>時間をおいて試してください</p>
-      <div class="error-animation">sorry...🙏🏼</div>
-    </div>
-  `;
   });
-}
 
-document.getElementById('generate-image-button').addEventListener('click', function() {
-  sendWordsToBackend();
-});
 
-function updateGenerateImageButtonState() {
-  const generateImageButton = document.getElementById('generate-image-button');
-  if (usedWords.length < 5) {
-    generateImageButton.disabled = true; // 配列が空の場合、ボタンを非活性化
-  } else {
-    generateImageButton.disabled = false; // 配列に要素がある場合、ボタンを活性化
+  // 単語数カウンタを更新する関数
+  function updateWordCount() {
+    const wordCount = usedWords.length; // 使用された単語の数
+    const wordCountContainer = document.getElementById('word-count');
+    wordCountContainer.textContent = `現在の単語数: ${wordCount}`;
   }
-}
 
-function formatDateToNow(date) {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため、1を足す
-  const dd = String(date.getDate()).padStart(2, '0');
-  const hh = String(date.getHours()).padStart(2, '0');
-  const min = String(date.getMinutes()).padStart(2, '0');
-  return `${yyyy}${mm}${dd}${hh}${min}`;
-}
-
-// #################################
-//       遊び方表示に関するコード
-// #################################
-// ポップアップ表示/非表示を制御する関数
-function toggleHowToPlayPopup(show) {
-  const popup = document.getElementById('how-to-play-popup');
-  if (show) {
-    popup.style.display = 'flex';
-  } else {
-    popup.style.display = 'none';
+  function toggleKana(text) {
+    // ひらがなとカタカナの対応表
+    const hiragana = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉゃゅょっゔ";
+    const katakana = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポァィゥェォャュョッヴ";
+    
+    let convertedText = "";
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (hiragana.includes(char)) {
+            // ひらがなからカタカナへ変換
+            const index = hiragana.indexOf(char);
+            convertedText += katakana[index];
+        } else if (katakana.includes(char)) {
+            // カタカナからひらがなへ変換
+            const index = katakana.indexOf(char);
+            convertedText += hiragana[index];
+        } else {
+            // その他の文字はそのまま
+            convertedText += char;
+        }
+    }
+    return convertedText;
   }
-}
 
-// ポップアップ内の閉じるボタンのイベントリスナー設定
-document.getElementById('close-how-to-play').addEventListener('click', function() {
-  toggleHowToPlayPopup(false);
-});
+  // #########################
+  //     SEのON / OFFトグル
+  // #########################
+  // SEのON/OFFを切り替えるイメージ要素
+  const seToggleImage = document.getElementById('se-toggle-image'); // HTMLにid="se-toggle-image"のimg要素を追加する
 
-// ローマ字対応表ポップアップの表示切替
-function toggleRomajiMapPopup(show) {
-  const popup = document.getElementById('romaji-map-popup');
-  if (show) {
-    popup.style.display = 'flex';
-    generateRomajiToHiraganaTable();
-  } else {
-    popup.style.display = 'none';
+  let isSeEnabled = true; // SEの再生状態を管理
+
+  // イメージクリックイベントの定義
+  seToggleImage.addEventListener('click', () => {
+    isSeEnabled = !isSeEnabled; // SEの状態を切り替え
+    seToggleImage.src = isSeEnabled ? './images/volume_on.jpg' : './images/volume_off.jpg'; // イメージのソースを更新
+  });
+
+  // SEを再生する関数（既存のplayNgSound関数に変更を加える）
+  function playNgSound() {
+    if (!isSeEnabled) return; // SEがOFFの場合はここで処理を終了
+    ngSound.play().catch(e => console.error("Audio play failed:", e));
   }
-}
 
-function generateRomajiToHiraganaTable() {
-  const vowels = ['a', 'i', 'u', 'e', 'o'];
-  const tableBody = document.getElementById('romaji-to-hiragana-table').querySelector('tbody');
-  tableBody.innerHTML = ''; // 既存のテーブル内容をクリア
-  
-  // ローマ字の配列を母音でフィルタリングしてグルーピング
-  const groupedRomaji = vowels.map(vowel => Object.entries(romajiToHiraganaMap).filter(([romaji]) => romaji.endsWith(vowel)));
+  function playTypingSound() {
+    if (!isSeEnabled) return; // SEがOFFの場合は再生しない
+    typingSound.currentTime = 0; // サウンドを最初から再生
+    typingSound.play().catch(e => console.error("Audio play failed:", e));
+  }
 
-  // 最大の行数を求める
-  const maxRows = Math.max(...groupedRomaji.map(group => group.length));
+  // #################################
+  //       ゲーム終了時の処理
+  // #################################
 
-  for (let rowIndex = 0; rowIndex < maxRows; rowIndex++) {
-    const row = tableBody.insertRow();
-    for (let vowelIndex = 0; vowelIndex < vowels.length; vowelIndex++) {
-      const romajiPair = groupedRomaji[vowelIndex][rowIndex];
-      if (romajiPair) {
-        const [romaji, hiragana] = romajiPair;
-        const cell = row.insertCell();
-        cell.textContent = `${romaji}: ${hiragana}`;
-        cell.colSpan = 1; // 母音ごとに2列を使用
-      } else {
-        // 対応するローマ字がない場合は空のセルを追加
-        const cell = row.insertCell();
-        cell.textContent = '';
-        cell.colSpan = 1;
+  // 画像生成のイベントリスナーとして使用する名前付き関数
+  function handleGenerateImageClick() {
+    // ポップアップを閉じる
+    document.getElementById('game-over-popup').style.display = 'none';
+    // 画像生成を開始する
+    sendWordsToBackend();
+  }
+
+  function gameOver() {
+    const gameOverPopup = document.getElementById('game-over-popup');
+    gameOverPopup.style.display = 'flex'; // ポップアップを表示
+
+    // 「画像生成」ボタンに対するイベントリスナー
+    const generateImageButton = document.getElementById('generate-image-after-game');
+
+    generateImageButton.removeEventListener('click', handleGenerateImageClick);
+    generateImageButton.addEventListener('click', handleGenerateImageClick);
+
+    const restartButton = document.getElementById('restart-game');
+    restartButton.focus(); // リスタートボタンにフォーカスをあてる
+    // クリックまたはEnterキー押下でリスタートするイベントリスナーを追加
+    restartOnAction = function(event) {
+      if (event.type === 'click' || (event.type === 'keydown' && event.key === 'Enter')) {
+        restartGame();
+        romajiInput = '';
+        // イベントリスナーを削除
+        restartButton.removeEventListener('click', restartOnAction);
+        document.removeEventListener('keydown', restartOnAction);
+      }
+    };
+
+    restartButton.addEventListener('click', restartOnAction);
+    document.addEventListener('keydown', restartOnAction);
+  }
+
+
+  // #################################
+  //       ゲームをリスタートする関数
+  // #################################
+  function restartGame() {
+    const gameOverPopup = document.getElementById('game-over-popup');
+    gameOverPopup.style.display = 'none'; // ポップアップを非表示
+
+    // イベントリスナーの削除
+    const restartButton = document.getElementById('restart-game');
+    restartButton.removeEventListener('click', restartOnAction);
+    document.removeEventListener('keydown', restartOnAction);
+
+    // ゲームの状態を初期化
+    const container = document.getElementById('generated-image-container');
+    const downloadButtons = document.getElementsByClassName('download-button');
+    container.innerHTML = '';
+    document.getElementById('typing-input').value = '';
+    usedWords = [];
+    if (lastArrowElement) {
+      lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
+      lastArrowElement = null;
+    }
+    if (downloadButtons[0]) { // 存在チェック
+      downloadButtons[0].parentNode.removeChild(downloadButtons[0]);
+    }
+
+    // しりとりの状況を表示するコンテナをクリア
+    const wordChainStatus = document.getElementById('word-chain-status-container');
+    while (wordChainStatus.firstChild) {
+      wordChainStatus.removeChild(wordChainStatus.firstChild);
+    }
+    updateGenerateImageButtonState();
+    updateWordCount();
+  }
+
+  function sendWordsToBackend() {
+    const container = document.getElementById('generated-image-container');
+    container.innerHTML = '<div class="loader"></div>';
+    // しりとり結果の単語の配列をJSON形式でバックエンドに送信
+    fetch("/games/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").getAttribute("content")
+      },
+      body: JSON.stringify({ words: usedWords })
+    })
+    .then(response => response.json())
+    .then(data => {
+      container.innerHTML = ''; // ローディングインジケーターをクリア
+
+      // バックエンドから返された画像データを表示
+      const imageElement = document.createElement('img');
+      imageElement.src = `data:image/jpeg;base64,${data.image}`;
+      container.appendChild(imageElement); // コンテナに画像を追加
+
+      // 既存のダウンロードボタンを削除
+      const existingDownloadButton = document.querySelector('.download-button')
+      if (existingDownloadButton) {
+        existingDownloadButton.parentNode.removeChild(existingDownloadButton);
+      }
+
+      // 画像ダウンロードボタンを既存の「画像生成」ボタンの隣に追加
+      const downloadButton = document.createElement('button');
+      downloadButton.textContent = '画像をダウンロード';
+      downloadButton.classList.add('download-button'); // CSSクラスの追加
+      // ダウンロード処理
+      downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = imageElement.src;
+        const now = new Date();
+        const formattedDate = formatDateToNow(now);
+        const promptForFilename = data.filename;
+        link.download = `word_chain_generated_image_${formattedDate}_(${promptForFilename}).jpg`; // ダウンロード時のファイル名
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+      // 「画像生成」ボタンの隣にダウンロードボタンを挿入
+      const generateImageButton = document.getElementById('generate-image-button');
+      generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
+    })
+    .catch(error => {
+      console.error('エラーが発生しました:', error);
+      container.innerHTML = `
+      <div class="error-message-container">
+        <p class="error-message">画像生成エラー<br>時間をおいて試してください</p>
+        <div class="error-animation">sorry...🙏🏼</div>
+      </div>
+    `;
+    });
+  }
+
+  document.getElementById('generate-image-button').addEventListener('click', function() {
+    sendWordsToBackend();
+  });
+
+  function updateGenerateImageButtonState() {
+    const generateImageButton = document.getElementById('generate-image-button');
+    if (usedWords.length < 5) {
+      generateImageButton.disabled = true; // 配列が空の場合、ボタンを非活性化
+    } else {
+      generateImageButton.disabled = false; // 配列に要素がある場合、ボタンを活性化
+    }
+  }
+
+  function formatDateToNow(date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // 月は0から始まるため、1を足す
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${yyyy}${mm}${dd}${hh}${min}`;
+  }
+
+  // #################################
+  //       遊び方表示に関するコード
+  // #################################
+  // ポップアップ表示/非表示を制御する関数
+  function toggleHowToPlayPopup(show) {
+    const popup = document.getElementById('how-to-play-popup');
+    if (show) {
+      popup.style.display = 'flex';
+    } else {
+      popup.style.display = 'none';
+    }
+  }
+
+  // ローマ字対応表ポップアップの表示切替
+  function toggleRomajiMapPopup(show) {
+    const popup = document.getElementById('romaji-map-popup');
+    if (show) {
+      popup.style.display = 'flex';
+      generateRomajiToHiraganaTable();
+    } else {
+      popup.style.display = 'none';
+    }
+  }
+
+  function generateRomajiToHiraganaTable() {
+    const vowels = ['a', 'i', 'u', 'e', 'o'];
+    const tableBody = document.getElementById('romaji-to-hiragana-table').querySelector('tbody');
+    tableBody.innerHTML = ''; // 既存のテーブル内容をクリア
+    
+    // ローマ字の配列を母音でフィルタリングしてグルーピング
+    const groupedRomaji = vowels.map(vowel => Object.entries(romajiToHiraganaMap).filter(([romaji]) => romaji.endsWith(vowel)));
+
+    // 最大の行数を求める
+    const maxRows = Math.max(...groupedRomaji.map(group => group.length));
+
+    for (let rowIndex = 0; rowIndex < maxRows; rowIndex++) {
+      const row = tableBody.insertRow();
+      for (let vowelIndex = 0; vowelIndex < vowels.length; vowelIndex++) {
+        const romajiPair = groupedRomaji[vowelIndex][rowIndex];
+        if (romajiPair) {
+          const [romaji, hiragana] = romajiPair;
+          const cell = row.insertCell();
+          cell.textContent = `${romaji}: ${hiragana}`;
+          cell.colSpan = 1; // 母音ごとに2列を使用
+        } else {
+          // 対応するローマ字がない場合は空のセルを追加
+          const cell = row.insertCell();
+          cell.textContent = '';
+          cell.colSpan = 1;
+        }
       }
     }
   }
-}
-
-
-// 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
-document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
-document.getElementById('close-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(false));
-document.getElementById('close-icon').addEventListener('click', () => toggleRomajiMapPopup(false));
-document.getElementById('close-how-to-play-icon').addEventListener('click', () => toggleHowToPlayPopup(false));
+};
