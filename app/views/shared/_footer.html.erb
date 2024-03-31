@@ -1,5 +1,9 @@
 <div class="footer">
- <%= link_to '利用規約', games_term_of_service_path, style: 'text-decoration: none;' 'color: #333;', class: 'terms' %>
+  <div class="footer_links">
+    <%= link_to '利用規約', games_term_of_service_path, style: 'text-decoration: none; color: #333;', class: 'terms' %>
+    <%= link_to 'プライバシーポリシー', games_privacy_policy_path, style: 'text-decoration: none; color: #333;', class: 'terms' %>
+    <%= link_to 'お問い合わせ', 'https://twitter.com/tairanobuhiko', style: 'text-decoration: none; color: #333;', class: 'terms' %>
+  </div>
   <div class="copyright">
     <span class="alternative-font">©︎</span>Word Chain Image Generator
   </div>
