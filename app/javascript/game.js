@@ -3,6 +3,7 @@ import { kanaMap } from "kana_conversion";
 // 【グローバル変数】
 let lastArrowElement = null; // 最後の矢印要素を管理するための変数
 let usedWords = []; // これまでに入力された単語を保持する配列
+let shareWords = [];
 let restartOnAction = null; 
 const typingSound = new Audio('/sounds/typing_se.mp3');
 typingSound.volume = 0.2;
@@ -17,6 +18,7 @@ function setupGameListeners() {
   typingInput.value = '';
   lastArrowElement = null;
   usedWords = []; // これまでに入力された単語を保持する配列
+  shareWords = [];
   restartOnAction = null; 
   
   // toggleHowToPlayPopup(true); // あそびかたポップアップを読み込み時に強制表示
@@ -170,6 +172,7 @@ function setupGameListeners() {
 
     // 単語を使用済み配列に追加（正規化してから追加）
     usedWords.push(normalizeKana(phrase));
+    shareWords.push(phrase);
     updateGenerateImageButtonState();
 
     // 最後に追加された矢印があれば、それを表示する
@@ -434,15 +437,20 @@ function setupGameListeners() {
     // ゲームの状態を初期化
     const container = document.getElementById('generated-image-container');
     const downloadButtons = document.getElementsByClassName('download-button');
+    const shareButtons = document.getElementsByClassName('share-button');
     container.innerHTML = '';
     document.getElementById('typing-input').value = '';
     usedWords = [];
+    shareWords = [];
     if (lastArrowElement) {
       lastArrowElement.style.display = 'none'; // 最後の矢印を非表示に
       lastArrowElement = null;
     }
     if (downloadButtons[0]) { // 存在チェック
       downloadButtons[0].parentNode.removeChild(downloadButtons[0]);
+    }
+    if (shareButtons[0]) { // 存在チェック
+      shareButtons[0].parentNode.removeChild(shareButtons[0]);
     }
 
     // しりとりの状況を表示するコンテナをクリア
@@ -464,7 +472,7 @@ function setupGameListeners() {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector("[name='csrf-token']").getAttribute("content")
       },
-      body: JSON.stringify({ words: usedWords })
+      body: JSON.stringify({ words: shareWords })
     })
     .then(response => response.json())
     .then(data => {
@@ -500,6 +508,24 @@ function setupGameListeners() {
       // 「画像生成」ボタンの隣にダウンロードボタンを挿入
       const generateImageButton = document.getElementById('generate-image-button');
       generateImageButton.parentNode.insertBefore(downloadButton, generateImageButton.nextSibling);
+
+      // 既存の共有ボタンを削除
+      const existingShareButton = document.querySelector('.share-button')
+      if (existingShareButton) {
+        existingShareButton.parentNode.removeChild(existingShareButton);
+      }
+      // Twitter共有ボタンの設置
+      const shareButton = document.createElement('button');
+      shareButton.textContent = 'X (Twitter) で共有';
+      shareButton.classList.add('share-button');
+      shareButton.addEventListener('click', () => {
+        // 単語をテキストとして結合し、エンコード
+        const wordsText = shareWords.join('→');
+        const tweetText = encodeURIComponent(`［${wordsText}］で画像を作ったよ #しりとり画像ジェネレーター`);
+        const url = `https://twitter.com/intent/tweet?text=${tweetText}&url=${location.href}`;
+        window.open(url, '_blank'); // 新しいタブでTwitter投稿画面を開く
+      });
+      downloadButton.parentNode.insertBefore(shareButton, downloadButton.nextSibling);
     })
     .catch(error => {
       console.error('エラーが発生しました:', error);

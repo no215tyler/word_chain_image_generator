@@ -75,3 +75,4 @@ end
 gem 'pg'
 gem 'httparty'
 gem 'pry-rails'
+gem 'twitter'
