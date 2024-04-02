@@ -476,6 +476,9 @@ function setupGameListeners() {
     })
     .then(response => response.json())
     .then(data => {
+      if (data.error) {
+        throw new Error(data.error);
+      }
       container.innerHTML = ''; // ローディングインジケーターをクリア
 
       // バックエンドから返された画像データを表示
