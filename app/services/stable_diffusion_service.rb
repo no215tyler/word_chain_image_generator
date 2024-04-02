@@ -5,6 +5,15 @@ class StableDiffusionService
   # カスタム例外クラスの定義
   class RetryableError < StandardError; end
 
+  class ServiceError < StandardError
+    attr_reader :status_code
+
+    def initialize(message, status_code = nil)
+      super(message)
+      @status_code = status_code
+    end
+  end
+
   API_URL = "https://api-inference.huggingface.co/models/stablediffusionapi/breakdomainxl-v6"
   HEADERS = {
     "Authorization" => ENV['STABLE_DIFFUSION_API_KEY']
@@ -21,17 +30,7 @@ class StableDiffusionService
 
     begin
       response = HTTParty.post(API_URL, body: payload.to_json, headers: HEADERS, timeout: TIMEOUT_SECONDS)
-
-      case response.code
-      when 200
-        return response.body
-      when 404
-        raise StandardError, "リソースが見つかりません。"
-      when 500, 503
-        raise RetryableError, "サーバー内部エラーまたはサービス利用不可エラーが発生しました。ステータスコード: #{response.code}"
-      else
-        raise StandardError, "API呼び出しで予期しないエラーが発生しました。ステータスコード: #{response.code}"
-      end
+      return response.body, response.code
     rescue Net::ReadTimeout, HTTParty::Error, RetryableError => e
       retry_count += 1
       if retry_count <= MAX_RETRY_ATTEMPTS
@@ -40,10 +39,10 @@ class StableDiffusionService
         sleep sleep_time
         query(prompt, negative_prompt, start_time, retry_count)
       else
-        raise StandardError, "リトライの最大試行回数に達しました: #{e.message}"
+        return "", response.code
       end
     rescue StandardError => e
-      raise StandardError, "API呼び出しでエラーが発生しました: #{e.message}"
+      return "", response.code
     end
   end
 end

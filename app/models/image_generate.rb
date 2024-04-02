@@ -1,0 +1,2 @@
+class ImageGenerate < ApplicationRecord
+end
