@@ -272,7 +272,7 @@ function setupGameListeners() {
             typingInput.value += match;
             romajiInput = remainder;
           } else if (remainder.length === 3 && !romajiToHiraganaMap[remainder]) {
-            const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|hhy|ppy|mmy|rry|ssh|cch)$/.test(remainder);
+            const waitingForMoreInput = /^(kky|ssy|tty|ccy|cch|ffy|hhy|ppy|mmy|rry|ssh|cch)$/.test(remainder);
             if (!waitingForMoreInput) {
               // 不適切な入力をユーザーに通知
               playNgSound();
