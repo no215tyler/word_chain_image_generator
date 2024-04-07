@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "しりとりルール", type: :system do
+  before do
+    driven_by(:selenium_chrome_headless)
+  end
+  
   context 'しりとりが続けられる場合' do
     it '単語が拗音で終わる場合は次の単語の頭文字も拗音で開始する' do
       visit root_path

@@ -1,0 +1,60 @@
+name: Rails CI Pipeline
+
+on: 
+  push:
+    branches:
+      - main # メインブランチへのプッシュ時にトリガー
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7.43
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: word_chain_image_generator_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.0'
+
+    - name: Install MySQL client
+      run: sudo apt-get install libmysqlclient-dev
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        gem install bundler
+        bundle install
+        
+    - name: Setup Database
+      env:
+        RAILS_ENV: test
+        DB_USERNAME: root
+        DB_PASSWORD: root
+      run: |
+        bundle exec rails db:create
+        bundle exec rails db:schema:load
+        
+    - name: Run tests
+      env:
+        RAILS_ENV: test
+      run: |
+        bundle exec rspec spec/models/image_generate_spec.rb
+        bundle exec rspec spec/requests/games_spec.rb
+        bundle exec rspec spec/system/image_generates_spec.rb
+        bundle exec rspec spec/system/word_chains_spec.rb
