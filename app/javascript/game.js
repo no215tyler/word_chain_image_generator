@@ -470,7 +470,6 @@ function setupGameListeners() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector("[name='csrf-token']").getAttribute("content")
       },
       body: JSON.stringify({ words: shareWords })
     })
