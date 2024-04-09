@@ -54,11 +54,15 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 <img alt="画面遷移図" src="https://i.gyazo.com/eb5c3f9a3aa2c9be044310de30d32bd6.png" width="400">
 
 ## 開発環境
-- フロントエンド：HTML/CSS, JavaScript
-- バックエンド：Ruby 3.2.0, Rails 7.0.8.1, PostgreSQL 14.10
-- インフラ：Render
-- API：StableDiffusion API（Hugging Face）, GAS翻訳API（自作）, Twitter API
-- その他：Git/GitHub, Figma
+| カテゴリ                     | 技術内容                                                             |
+| ---------------------------- | -------------------------------------------------------------------- |
+| フロントエンド               | HTML/CSS, JavaScript                                                 |
+| バックエンド                 | Ruby 3.2.0, Rails 7.0.8.1, PostgreSQL 14.10                          |
+| インフラ                     | Render                                                               |
+| API                          | StableDiffusion API（Hugging Face）, GAS翻訳API（自作）, Twitter API |
+| コード管理                   | Git/GitHub                                                           |
+| CI/CD                        | CI：GitHub Actions, CD：Render                                   |
+| 画面遷移図, ワイヤーフレーム | Figma                                                                |
 
 ## ローカルでの動作方法
 ※ 画像生成をするために別途Hugging FaceでAPI Keyを取得し **`STABLE_DIFFUSION_API_KEY`** として環境変数化が必要です。
@@ -79,6 +83,7 @@ https://zenn.dev/no215/articles/9490defad6948b
 - ペルソナ（小学校低学年）に向けては不要な機能ですが、サービスのユーザースケールを目的としてSNS（X）へのシェア機能を実装しました。
 - 画像生成機能において適切な生成AIモデルを選択し、ネガティブプロンプトをあらかじめ組み込むことで極力不適切な画像を生成させない仕様としました。
 - しりとりのルールにおける拗音（「しゃ」など）や長音（「ー」）または拗音＋長音（「シャー」など）で単語が終わる場合の次の単語の頭文字の扱いに配慮しました。（例：「ゃ」で始まる単語を求めない）
+- テストコード実装においてテストのたびに画像生成APIを叩く処理をエミュレートし外部APIによる依存を制御することでテストの安定性を向上させました。
 
 ## 改善点
 - 画像生成に関してリクエスト制限対策を講じたい。Stable Diffusionのレート制限に達した場合は代替先となる別のAPIへリクエストを行うことで画像生成エラーの可能性を減らしUX向上に繋げたい。
@@ -86,7 +91,7 @@ https://zenn.dev/no215/articles/9490defad6948b
 
 ## 制作時間
 - 2024年4月1日時点でトータル105時間
-  - 最小限機能でのMVPリリースで50時間ほど
+  - MVPリリースで50時間ほど
   ### MVPリリース時点での実装機能
     - タイピング機能
       - タイピング正誤判定
