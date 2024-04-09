@@ -31,10 +31,10 @@ development:
 test:
   <<: *default
   adapter: mysql2
-  encoding: utf8
+  # encoding: utf8
   username: root
-  password: root
-  host: 127.0.0.1
+  password: #root
+  host: localhost #127.0.0.1
   database: word_chain_image_generator_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
