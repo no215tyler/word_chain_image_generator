@@ -12,6 +12,7 @@ RSpec.describe "画像生成の開始", type: :system do
   context '画像生成をリクエストできる場合' do
     it '単語が5つ以上登録されていれば画像生成リクエストができる' do
       visit root_path
+      find('#close-how-to-play-icon').click
       fill_in 'typing-input', with: 'りす'
       click_on('return')
       fill_in 'typing-input', with: 'スイカ'
@@ -30,6 +31,7 @@ RSpec.describe "画像生成の開始", type: :system do
 
     it '単語が5つ未満の場合でもゲームオーバーになれば画像生成リクエストができる' do
       visit root_path
+      find('#close-how-to-play-icon').click
       click_on('R')
       click_on('I')
       click_on('S')
@@ -70,6 +72,7 @@ RSpec.describe "画像生成の開始", type: :system do
   context '画像生成をリクエストできない場合' do
     it '単語が5つ未満の場合はゲームオーバーでない限り画像生成できない' do
       visit root_path
+      find('#close-how-to-play-icon').click
       fill_in 'typing-input', with: 'りす'
       click_on('return')
       fill_in 'typing-input', with: 'スイカ'

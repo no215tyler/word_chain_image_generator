@@ -21,7 +21,7 @@ function setupGameListeners() {
   shareWords = [];
   restartOnAction = null; 
   
-  // toggleHowToPlayPopup(true); // あそびかたポップアップを読み込み時に強制表示
+  toggleHowToPlayPopup(true); // あそびかたポップアップを読み込み時に強制表示
   updateGenerateImageButtonState();
   // 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
   document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
