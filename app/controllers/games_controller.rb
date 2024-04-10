@@ -4,8 +4,9 @@ class GamesController < ApplicationController
   end
 
   def create
-    words = params[:words].join(", ")
-    translated_words = TranslationService.translate(words)
+    words = params[:words]
+    filtered_words = WordFilterService.filter_words(words)
+    translated_words = TranslationService.translate(filtered_words.join(","))
     filename = translated_words.clone
     puts filename
     translated_words = "master piece, best quality, " + translated_words
@@ -14,7 +15,7 @@ class GamesController < ApplicationController
 
     # DBへ保存
     ImageGenerate.create!(
-      word_chain: words,
+      word_chain: words.join(","),
       prompt: filename,
       http_status: http_status
     )
