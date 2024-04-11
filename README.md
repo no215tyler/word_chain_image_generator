@@ -44,11 +44,12 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 
 ## データベース設計
 ### image_generatesテーブル
-| Column      | Type    | Options     |
-| ----------- | ------- | ----------- |
-| word_chain  | text    | null: false |
-| prompt      | text    | null: false |
-| http_status | integer | null: false |
+| Column         | Type    | Options     |
+| -------------- | ------- | ----------- |
+| word_chain     | text    | null: false |
+| prompt         | text    | null: false |
+| http_status    | integer | null: false |
+| generate_model | string  | null: false |
 
 ## 画面遷移図
 <img alt="画面遷移図" src="https://i.gyazo.com/eb5c3f9a3aa2c9be044310de30d32bd6.png" width="400">

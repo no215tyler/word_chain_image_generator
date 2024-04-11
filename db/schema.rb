@@ -15,6 +15,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_02_011516) do
     t.text "word_chain", null: false
     t.text "prompt", null: false
     t.integer "http_status", null: false
+    t.string "generate_model", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
