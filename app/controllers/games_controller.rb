@@ -12,7 +12,17 @@ class GamesController < ApplicationController
     translated_words = "master piece, best quality, " + translated_words
     negative_prompt = "EasyNegative, (worst quality, low quality:1.4), lowres, ugly, bad anatomy, nsfw((Not safe for work)), low quality, negative hand-neg, bad anatomy ,extra fingers, fewer fingers, missing fingers ,extra arms, fewer arms, missing arms, extra legs, fewer legs, extra legs ,text ,logo, watermark, text, word, monochrome, rainbow, wood"
     image_bytes, http_status = StableDiffusionService.query(translated_words, negative_prompt)
+    model = "Stable Diffusion"
 
+    if http_status == 429
+      model = "dall-e-3"
+      image_bytes, http_status = Dalle3Service.query(translated_words, model)
+    end
+    if http_status == 429 # レートエラー時はDALL-E2にフォールバック
+      model = "dall-e-2"
+      image_bytes, http_status = Dalle3Service.query(translated_words, model)
+    end
+    puts model
     # DBへ保存
     ImageGenerate.create!(
       word_chain: words.join(","),

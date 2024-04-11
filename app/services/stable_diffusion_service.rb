@@ -32,6 +32,9 @@ class StableDiffusionService
       response = HTTParty.post(API_URL, body: payload.to_json, headers: HEADERS, timeout: TIMEOUT_SECONDS)
       if response.code == 200
         return response.body, response.code
+      elsif response.code == 429
+        puts "Stable Diffusionのレート制限に達しました。DALL-Eモデルへフォールバックします。"
+        return "", response.code
       else
         raise RetryableError, "API response code: #{response.code}"
       end
