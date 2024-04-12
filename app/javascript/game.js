@@ -526,8 +526,8 @@ function setupGameListeners() {
         // 単語をテキストとして結合し、エンコード
         const wordsText = shareWords.join('→');
         const appUrl = "https://word-chain-image-generator.onrender.com/"
-        const tweetText = encodeURIComponent(`［${wordsText}］で画像を作ったよ ${appUrl} #しりとり画像ジェネレーター`);
-        const url = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(data.image_url)}`;
+        const tweetText = encodeURIComponent(`［${wordsText}］で画像を作ったよ ${appUrl}`);
+        const url = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(data.image_url)}&hashtags=しりとり画像ジェネレーター`;
         window.open(url, '_blank'); // 新しいタブでTwitter投稿画面を開く
       });
       downloadButton.parentNode.insertBefore(shareButton, downloadButton.nextSibling);

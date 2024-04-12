@@ -26,7 +26,7 @@ class GamesController < ApplicationController
       @image_url = rails_blob_url(image_generate.image)
       shortened_url = TinyUrlService.shorten(@image_url)
       image_data = Base64.encode64(image_bytes)
-      response_body = { image: image_data, filename: filename, image_url: shortened_url }
+      response_body = { image: image_data, filename: filename, image_url: shortened_url, og_image: @image_url }
     else
       response_body = { error: "画像生成エラー：ステータスコード：#{http_status}" }
     end
