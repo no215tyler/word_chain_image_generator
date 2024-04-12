@@ -526,7 +526,7 @@ function setupGameListeners() {
         // 単語をテキストとして結合し、エンコード
         const wordsText = shareWords.join('→');
         const tweetText = encodeURIComponent(`［${wordsText}］で画像を作ったよ #しりとり画像ジェネレーター`);
-        const url = `https://twitter.com/intent/tweet?text=${tweetText}&url=${location.href}`;
+        const url = `https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(data.image_url)}`;
         window.open(url, '_blank'); // 新しいタブでTwitter投稿画面を開く
       });
       downloadButton.parentNode.insertBefore(shareButton, downloadButton.nextSibling);
