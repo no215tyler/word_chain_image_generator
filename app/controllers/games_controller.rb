@@ -14,16 +14,18 @@ class GamesController < ApplicationController
     image_bytes, http_status, generate_model = generate_image(translated_words)
 
     # DBへ保存
-    ImageGenerate.create!(
+    image_generate = ImageGenerate.new(
       word_chain: words.join(","),
       prompt: filename,
       http_status: http_status,
       generate_model: generate_model
     )
-    # レスポンスの処理
+    
     if http_status == 200
+      image_generate.image.attach(io: StringIO.new(image_bytes), filename: "#{filename}.jpg", content_type: "image/jpeg")
+      image_generate.save!
       image_data = Base64.encode64(image_bytes)
-      render json: { image: image_data, filename: filename }
+      render json: { image: image_data, filename: filename, image_url: rails_blob_url(image_generate.image) }
     else
       render json: { error: "画像生成エラー：ステータスコード：#{http_status}" }, status: :internal_server_error
     end
