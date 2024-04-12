@@ -23,14 +23,15 @@ class GamesController < ApplicationController
     
     if http_status == 200
       image_generate.image.attach(io: StringIO.new(image_bytes), filename: "#{filename}.jpg", content_type: "image/jpeg")
-      image_generate.save!
-      image_url = rails_blob_url(image_generate.image)
-      shortened_url = TinyUrlService.shorten(image_url)
+      @image_url = rails_blob_url(image_generate.image)
+      shortened_url = TinyUrlService.shorten(@image_url)
       image_data = Base64.encode64(image_bytes)
-      render json: { image: image_data, filename: filename, image_url: shortened_url }
+      response_body = { image: image_data, filename: filename, image_url: shortened_url }
     else
-      render json: { error: "画像生成エラー：ステータスコード：#{http_status}" }, status: :internal_server_error
+      response_body = { error: "画像生成エラー：ステータスコード：#{http_status}" }
     end
+    image_generate.save!
+    render json: response_body, status: (http_status == 200 ? :ok : :internal_server_error)
   end
 
   def term_of_service
