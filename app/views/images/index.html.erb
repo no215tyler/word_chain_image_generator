@@ -4,7 +4,12 @@
     <div class="slides">
       <% @images.each do |img| %>
         <% if img.image.attached? %>
-          <%= image_tag img.image.variant(resize: '450x450') %>
+         <div class="image-container">
+            <%= image_tag img.image.variant(resize: '450x450'), class: 'slide-image' %>
+            <div class="image-params-element">
+              <div class="word-content"><%= img.word_chain.gsub(",", " ▷ ") %></div>
+            </div>
+          </div>
         <% end %>
       <% end %>
     </div>

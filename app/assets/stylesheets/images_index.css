@@ -34,7 +34,7 @@
 .slider {
   overflow: hidden;
   width: 450px;
-  height: 450px;
+  height: 600px;
   display: flex;
   justify-content: center;
 }
@@ -81,6 +81,34 @@
 .slider:hover .prev,
 .slider:hover .next {
   background-color: rgba(0,0,0,0.8);
+}
+
+.image-container {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.slide-image {
+  width: 450px;
+  height: 450px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.image-params-element {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 15px;
+  background-color: rgba(191, 193, 82, 0.3);
+  color: #333;
+  font-size: 0.9em;
+  font-weight: bold;
+  font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+}
+
+.word-content {
+  flex: 1;
 }
 
 @media (max-width: 768px) {
