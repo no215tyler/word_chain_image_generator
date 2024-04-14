@@ -1,0 +1,14 @@
+<div class="content-wrapper">
+  <h2 class="gallery-heading">作品例</h2>
+  <div class="slider">
+    <div class="slides">
+      <% @images.each do |img| %>
+        <% if img.image.attached? %>
+          <%= image_tag img.image.variant(resize: '450x450') %>
+        <% end %>
+      <% end %>
+    </div>
+    <button class="prev">❮</button>
+    <button class="next">❯</button>
+  </div>
+</div>

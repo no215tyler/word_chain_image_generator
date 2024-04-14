@@ -1,0 +1,99 @@
+.content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.gallery-heading {
+  position: relative;
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+  font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: transparent;
+  padding: 0 10px;
+}
+
+.gallery-heading::after {
+  content: ""; /* 疑似要素を機能させるために必須 */
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0; /* テキストの下部に疑似要素を揃える */
+  height: 50%; /* テキストの下半分をカバーするように背景の高さを調整 */
+  background-color: rgba(245, 245, 114, 0.8);
+  z-index: -1;
+}
+
+.slider {
+  overflow: hidden;
+  width: 450px;
+  height: 450px;
+  display: flex;
+  justify-content: center;
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+
+.slides img {
+  flex-shrink: 0;
+}
+
+.slider .prev,
+.slider .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%) translateX(-50%);
+  padding: 0.5em 0.8em;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  transition: background-color 0.5s ease;
+  user-select: none;
+  background-color: rgba(0,0,0,0.5);
+  border: none;
+  border-radius: 50%;
+}
+
+.slider .prev {
+  left: 20px;
+  transform: translateY(-50%);
+}
+
+.slider .next {
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+
+.slider:hover .prev,
+.slider:hover .next {
+  background-color: rgba(0,0,0,0.8);
+}
+
+@media (max-width: 768px) {
+  .slider .prev,
+  .slider .next {
+    font-size: 1.5em;
+    background-color: rgba(0,0,0,0.3);
+  }
+  .slider:hover .prev,
+  .slider:hover .next {
+    background-color: rgba(0,0,0,0.4);
+  }
+  .slider {
+    position: relative;
+  }
+}
