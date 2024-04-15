@@ -4,14 +4,19 @@ document.addEventListener('turbo:load', () => {
   const totalSlides = slides.length;
   let autoSlideInterval = null;
   // タッチイベントに関する設定
-  let startX;
-  let startY;
+  let startX, startY, isNearEdge;
   const slider = document.querySelector('.slider');
-
+  // 画面の端からのタッチかどうかをチェック
+  const touchBorderWidth = 30; // 画面の端からの距離（ピクセル）
+  
   // タッチ開始時のハンドラー
   slider.addEventListener('touchstart', function(e) {
     startX = e.touches[0].pageX;
     startY = e.touches[0].pageY;
+    isNearEdge = startX < touchBorderWidth || startX > window.innerWidth - touchBorderWidth;
+    if (!isNearEdge) {
+      e.preventDefault();
+    }
   });
 
   // タッチ終了時のハンドラー
@@ -26,9 +31,13 @@ document.addEventListener('turbo:load', () => {
   });
 
   slider.addEventListener('touchmove', function(e) {
+    if (isNearEdge) {
+      return
+    }
     const moveX = e.touches[0].pageX;
     const moveY = e.touches[0].pageY;
     const diffX = startX - moveX;
+
 
     // Y方向の動きがX方向の動きより小さい場合、横スクロールと判断
     if (Math.abs(diffX) > Math.abs(startY - moveY)) {
