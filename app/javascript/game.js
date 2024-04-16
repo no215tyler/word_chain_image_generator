@@ -20,8 +20,13 @@ function setupGameListeners() {
   usedWords = []; // これまでに入力された単語を保持する配列
   shareWords = [];
   restartOnAction = null; 
-  
-  toggleHowToPlayPopup(true); // あそびかたポップアップを読み込み時に強制表示
+  function showModal () {
+    if (!localStorage.getItem('modalShown')) {
+      toggleHowToPlayPopup(true); // あそびかたポップアップの表示
+      localStorage.setItem('modalShown', true);
+    }
+  }
+  showModal();
   updateGenerateImageButtonState();
   // 「ローマ字対応表」ボタンと閉じるボタンのイベントリスナー設定
   document.getElementById('show-romaji-map').addEventListener('click', () => toggleRomajiMapPopup(true));
@@ -165,7 +170,7 @@ function setupGameListeners() {
     return true;
   }
 
-  // 「return」キーがクリックされた場合の処理（176）
+  // 「return」キーがクリックされた場合の処理
   function addPhraseAndArrow(phrase) {
     // 入力された単語がしりとりのルールに適合しているかチェック
     if (!isValidShiritoriWord(phrase)) return;
