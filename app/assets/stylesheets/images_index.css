@@ -88,6 +88,41 @@
   margin-bottom: 10px;
 }
 
+.hover-container {
+  background-color: rgba(255, 255, 255, 0);
+  position: absolute;
+  z-index: 5;
+  top: 15px;
+  right: 15px;
+  padding: 10px;
+}
+
+.hover-container img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.hover-list ul {
+  display: none;
+  z-index: 5;
+  list-style: none;
+}
+
+.hover-list ul a {
+  color: black;
+  text-decoration: none;
+}
+
+
+.hover-container:hover .hover-list ul {
+  display: flex;
+  justify-content: center;
+  padding-right: 2.5em;
+  background-color: rgba(255, 255, 255, 0.859);
+  border-radius: 5px;
+}
+
 .slide-image {
   width: 450px;
   height: 450px;

@@ -5,6 +5,14 @@
       <% @images.each do |img| %>
         <% if img.image.attached? %>
          <div class="image-container">
+            <div class="hover-container">
+              <%= image_tag 'arrow_top.png' %>
+              <div class="hover-list">
+                <ul>
+                  <li><%= link_to '削除', image_path(img), data: { turbo_method: :delete } %></li>
+                </ul>
+              </div>
+            </div>
             <%= image_tag img.image.variant(resize: '450x450'), class: 'slide-image' %>
             <div class="image-params-element">
               <div class="word-content"><%= img.word_chain.gsub(",", " ▷ ") %></div>

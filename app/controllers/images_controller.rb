@@ -3,4 +3,10 @@ class ImagesController < ApplicationController
     images = ImageGenerate.where(http_status: 200).to_a
     @images = images.sample(5)
   end
+
+  def destroy
+    image = ImageGenerate.find(params[:id])
+    image.destroy
+    redirect_to images_path
+  end
 end

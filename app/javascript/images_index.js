@@ -1,7 +1,7 @@
 document.addEventListener('turbo:load', () => {
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slides img');
-  const totalSlides = slides.length;
+  const totalSlides = 5; // 【注意】マジックナンバー
   let autoSlideInterval = null;
   // タッチイベントに関する設定
   let startX, startY, isNearEdge;
