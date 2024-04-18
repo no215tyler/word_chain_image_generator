@@ -6,9 +6,11 @@ let usedWords = []; // これまでに入力された単語を保持する配列
 let shareWords = [];
 let restartOnAction = null; 
 const typingSound = new Audio('/sounds/typing_se.mp3');
-typingSound.volume = 0.2;
+typingSound.volume = 0.1;
 const ngSound = new Audio('/sounds/ng_sound.mp3');
-ngSound.volume = 0.2;
+ngSound.volume = 0.1;
+const waitingSound = new Audio('/sounds/waiting_se.mp3')
+waitingSound.volume = 0.1;
 let keyListenerAdded = false;
 
 document.addEventListener('turbo:load', setupGameListeners);
@@ -387,6 +389,19 @@ function setupGameListeners() {
     typingSound.play().catch(e => console.error("Audio play failed:", e));
   }
 
+  function playWaitingSound(playback) {
+    if (!isSeEnabled) return; // SEがOFFの場合は再生しない
+    if (playback) {
+      waitingSound.currentTime = 0; // サウンドを最初から再生
+      waitingSound.loop = true; // ループを有効化
+      waitingSound.play().catch(e => console.error("Audio play failed:", e));
+    } else {
+      waitingSound.pause();
+      waitingSound.currentTime = 0;
+      waitingSound.loop = false;
+    };
+  }
+
   // #################################
   //       ゲーム終了時の処理
   // #################################
@@ -470,6 +485,7 @@ function setupGameListeners() {
   function sendWordsToBackend() {
     const container = document.getElementById('generated-image-container');
     container.innerHTML = '<div class="loader"></div>';
+    playWaitingSound(true);
     // しりとり結果の単語の配列をJSON形式でバックエンドに送信
     fetch("/games/create", {
       method: "POST",
@@ -480,6 +496,7 @@ function setupGameListeners() {
     })
     .then(response => response.json())
     .then(data => {
+      playWaitingSound(false);
       if (data.error) {
         throw new Error(data.error);
       }
