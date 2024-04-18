@@ -15,6 +15,10 @@ let keyListenerAdded = false;
 
 document.addEventListener('turbo:load', setupGameListeners);
 function setupGameListeners() {
+  const gamePageElement = document.getElementsByClassName('word-chain-status-heading')
+  if (gamePageElement.length === 0) {
+    return;
+  }
   let romajiInput = ''; // ローマ字入力を蓄積する変数
   const typingInput = document.getElementById('typing-input');
   typingInput.value = '';
