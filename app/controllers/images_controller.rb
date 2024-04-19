@@ -4,6 +4,10 @@ class ImagesController < ApplicationController
     @images = images.sample(5)
   end
 
+  def show
+    @image = ImageGenerate.find(params[:id])
+  end
+
   def destroy
     image = ImageGenerate.find(params[:id])
     image.destroy

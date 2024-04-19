@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   get 'games/privacy_policy'
   post 'games/create', to: 'games#create'
   root to: 'games#index'
-  resources :images, only: [:index, :destroy]
+  resources :images, only: [:index, :destroy, :show]
 end

@@ -20,17 +20,18 @@ class GamesController < ApplicationController
       http_status: http_status,
       generate_model: generate_model
     )
-    
+
     if http_status == 200
       image_generate.image.attach(io: StringIO.new(image_bytes), filename: "#{filename}.jpg", content_type: "image/jpeg")
-      @image_url = rails_blob_url(image_generate.image)
-      shortened_url = TinyUrlService.shorten(@image_url)
       image_data = Base64.encode64(image_bytes)
-      response_body = { image: image_data, filename: filename, image_url: shortened_url, og_image: @image_url }
+      response_body = { image: image_data, filename: filename }
     else
       response_body = { error: "画像生成エラー：ステータスコード：#{http_status}" }
     end
     image_generate.save!
+    image_url = "https://word-chain-image-generator.onrender.com/images/#{image_generate.id}"
+    shortened_url = TinyUrlService.shorten(image_url)
+    response_body[:image_url] = shortened_url
     render json: response_body, status: (http_status == 200 ? :ok : :internal_server_error)
   end
 
