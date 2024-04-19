@@ -4,6 +4,11 @@ class ImagesController < ApplicationController
     @images = images.sample(5)
   end
 
+  def gallery
+    galleries = ImageGenerate.all.to_a
+    @random_gallery = galleries.sample(8)
+  end
+
   def show
     @image = ImageGenerate.find(params[:id])
   end

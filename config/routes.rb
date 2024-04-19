@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'games/term_of_service'
   get 'games/privacy_policy'
   post 'games/create', to: 'games#create'
+  get 'images/gallery', to: 'images#gallery'
   root to: 'games#index'
   resources :images, only: [:index, :destroy, :show]
 end
