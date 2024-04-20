@@ -5,6 +5,7 @@ class CreateImageGenerates < ActiveRecord::Migration[7.0]
       t.text :prompt, null: false
       t.integer :http_status, null: false
       t.string :generate_model, null: false
+      t.references :user, null: false, foreign_key: true
       t.timestamps
     end
   end
