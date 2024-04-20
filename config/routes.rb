@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'games/index'
   get 'games/term_of_service'
   get 'games/privacy_policy'
