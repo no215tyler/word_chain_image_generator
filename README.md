@@ -43,27 +43,46 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 - 制限時間機能（ゲーム性を高める目的ですが、ペルソナ（小学校低学年）に対しては楽しめなくなる要素の可能性が高いため難易度選択の追加要素として検討）
 
 ## データベース設計
-### image_generatesテーブル
-| Column         | Type    | Options     |
-| -------------- | ------- | ----------- |
-| word_chain     | text    | null: false |
-| prompt         | text    | null: false |
-| http_status    | integer | null: false |
-| generate_model | string  | null: false |
+<img src="er.png" style="background-color: white; padding: 2px;">
 
-## 画面遷移図
-<img alt="画面遷移図" src="https://i.gyazo.com/eb5c3f9a3aa2c9be044310de30d32bd6.png" width="400">
+### usersテーブル
+| Column             | Type    | Options                   |
+| ------------------ | ------- | ------------------------- |
+| id(PK)             | integer | null: false               |
+| name               | string  | null: false               |
+| email              | string  | null: false, unique: true |
+| password           | string  | null: false               |
+| encrypted_password | string  | null: false               |
+
+### Association
+- has_many :image_generates
+
+### image_generatesテーブル
+| Column         | Type       | Options                        |
+| -------------- | ---------- | ------------------------------ |
+| id(PK)         | integer    | null: false                    |
+| word_chain     | text       | null: false                    |
+| prompt         | text       | null: false                    |
+| http_status    | integer    | null: false                    |
+| generate_model | string     | null: false                    |
+| user(FK)       | references | null: false, foreign_key: true |
+
+### Association
+- belongs_to :user
 
 ## 開発環境
-| カテゴリ                     | 技術内容                                                             |
-| ---------------------------- | -------------------------------------------------------------------- |
-| フロントエンド               | HTML/CSS, JavaScript                                                 |
-| バックエンド                 | Ruby 3.2.0, Rails 7.0.8.1, PostgreSQL 14.10                          |
-| インフラ                     | Render                                                               |
-| API                          | StableDiffusion API（Hugging Face）, GAS翻訳API（自作）, Twitter API |
-| コード管理                   | Git/GitHub                                                           |
-| CI/CD                        | CI：GitHub Actions, CD：Render                                   |
-| 画面遷移図, ワイヤーフレーム | Figma                                                                |
+| カテゴリ                     | 技術内容                                                                                      |
+| ---------------------------- | --------------------------------------------------------------------------------------------- |
+| フロントエンド               | HTML/CSS, Tailwind CSS, JavaScript                                                            |
+| バックエンド                 | Ruby 3.2.0, Rails 7.0.8.1, PostgreSQL 14.10                                                   |
+| インフラ                     | Render                                                                                        |
+| ファイルサーバー             | AWS S3                                                                                        |
+| API                          | StableDiffusion API（Hugging Face）, GAS翻訳API（自作）, Twitter API, Tiny_URL（短縮URL生成） |
+| バージョン管理               | Git/GitHub                                                                                    |
+| CI/CD                        | CI：GitHub Actions, CD：Render                                                                |
+| ワイヤーフレーム, ER図 | Figma, drow.io                                                                                |
+
+
 
 ## ローカルでの動作方法
 ※ 画像生成をするために別途Hugging FaceでAPI Keyを取得し **`STABLE_DIFFUSION_API_KEY`** として環境変数化が必要です。
