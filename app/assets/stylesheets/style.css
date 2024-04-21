@@ -756,3 +756,11 @@ button {
   visibility: visible;
   opacity: 1;
 }
+
+#error_explanation {
+  background-color: yellow;
+  color: red;
+  font-size: small;
+  border-radius: 5px;
+  padding: 5px;
+}
