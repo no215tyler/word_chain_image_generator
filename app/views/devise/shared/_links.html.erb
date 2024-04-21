@@ -1,15 +1,19 @@
 <%- if controller_name != 'sessions' %>
   <span class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 mt-3 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base">
-    <%= link_to "ログインページへ", new_session_path(resource_name) %><br />
+    <%= link_to "ログインページ", new_session_path(resource_name) %><br />
   </span>
 <% end %>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "Sign up", new_registration_path(resource_name) %><br />
+  <span class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 mt-3 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base">
+    <%= link_to "サインアップページ", new_registration_path(resource_name) %><br />
+  </span>
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+  <span class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 mt-3 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base">
+    <%= link_to "パスワードを忘れた場合はコチラ", new_password_path(resource_name) %><br />
+  </span>
 <% end %>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
