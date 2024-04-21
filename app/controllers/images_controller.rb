@@ -5,7 +5,7 @@ class ImagesController < ApplicationController
   end
 
   def gallery
-    galleries = ImageGenerate.all.to_a
+    galleries = ImageGenerate.includes(:user).to_a
     @random_gallery = galleries.sample(8)
   end
 
