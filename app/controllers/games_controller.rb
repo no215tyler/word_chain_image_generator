@@ -13,8 +13,15 @@ class GamesController < ApplicationController
 
     image_bytes, http_status, generate_model = generate_image(translated_words)
 
+    if user_signed_in?
+      user_id = current_user.id
+    else
+      user_id = 2 # ゲストユーザーを定義
+    end
+
     # DBへ保存
     image_generate = ImageGenerate.new(
+      user_id: user_id,
       word_chain: words.join(","),
       prompt: filename,
       http_status: http_status,
