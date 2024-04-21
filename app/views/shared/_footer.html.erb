@@ -7,4 +7,66 @@
   <div class="copyright">
     <span class="alternative-font">©︎</span>Word Chain Image Generator
   </div>
+
+  <div class="header__inner">
+    <button id="js-hamburger" type="button" class="hamburger" aria-controls="navigation" aria-expanded="false" aria-label="メニューを開く">
+      <span class="hamburger__line"></span>
+      <span class="hamburger__text"></span>
+    </button>
+    <div class="header__nav-area js-nav-area" id="navigation">
+      <nav id="js-global-navigation" class="global-navigation">
+        <ul class="global-navigation__list">
+          <li>
+            <span class='global-navigation__link'>
+              <% if user_signed_in? %>
+                ようこそ <%= current_user.name %> さん
+              <% else %>
+                ようこそ ゲスト さん
+              <% end %>
+            </span>
+          </li>
+          <% unless params[:controller] == 'games' && params[:action] == 'index' %>
+            <li>
+              <%= link_to 'トップページ', root_path, class: 'global-navigation__link' %>
+            </li>
+          <% end %>
+          <li>
+            <% if user_signed_in? %>
+              <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete }, class: 'global-navigation__link' %>
+            <% else %>
+              <%= link_to 'ログイン', new_user_session_path, class: 'global-navigation__link' %>
+            <% end %>
+          </li>
+          <% unless user_signed_in? %>
+            <li>
+              <%= link_to '新規登録', new_user_registration_path, class: 'global-navigation__link' %>
+            </li>
+          <% end %>
+          <% if user_signed_in? %>
+            <li>
+              <button type="button" class="global-navigation__link -accordion js-sp-accordion-trigger" aria-expanded = 'false' aria-controls="accordion1">
+                ユーザー管理メニュー
+              </button>
+                <div id="accordion1" class="accordion js-accordion">
+                  <ul class="accordion__list">
+                    <li>
+                      <a href="#" class="accordion__link">
+                        マイページ（開発中）
+                      </a>
+                    </li>
+                      <li>
+                        <%= link_to 'ユーザー情報編集', edit_user_registration_path, class: 'accordion__link' %>
+                    </li>
+                  </ul>
+                </div>
+            </li>
+          <% end %>
+          <li>
+            <%= link_to 'ギャラリー（みんなの作品例）', images_gallery_path, class: 'global-navigation__link' %>
+          </li> 
+        </ul>
+        <div id="js-focus-trap" tabindex="0"></div>
+      </nav>
+    </div>
+  </div>
 </div>
