@@ -1,5 +1,7 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to "Log in", new_session_path(resource_name) %><br />
+  <span class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 mt-3 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base">
+    <%= link_to "ログインページへ", new_session_path(resource_name) %><br />
+  </span>
 <% end %>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
