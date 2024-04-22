@@ -3,6 +3,8 @@ require 'webmock/rspec'
 
 RSpec.describe "画像生成の開始", type: :system do
   before do
+    user = FactoryBot.create(:user)
+    sign_in user
     driven_by(:selenium_chrome_headless)
 
     stub_request(:post, "https://api-inference.huggingface.co/models/stablediffusionapi/breakdomainxl-v6")
