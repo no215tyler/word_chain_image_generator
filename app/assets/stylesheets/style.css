@@ -3,6 +3,7 @@
   padding: 20px 0;
   text-align: center;
   border-bottom: 3px solid #FFB6C1; 
+  position: relative;
 }
 
 .header h1 {
