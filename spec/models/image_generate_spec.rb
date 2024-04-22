@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe ImageGenerate, type: :model do
 
   before do
+    user = FactoryBot.create(:user)
     @result_generate = FactoryBot.build(:image_generate)
   end
 
