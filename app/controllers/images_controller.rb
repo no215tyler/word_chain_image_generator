@@ -16,6 +16,6 @@ class ImagesController < ApplicationController
   def destroy
     image = ImageGenerate.find(params[:id])
     image.destroy
-    redirect_to images_path
+    redirect_to root_path
   end
 end
