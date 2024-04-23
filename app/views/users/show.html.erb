@@ -11,7 +11,7 @@
             <div><%= link_to '削除', image_path(image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 my-1 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base"%></div>
           <% end %>
         <% end %>
-        <span class="text-xs text-center"><%= image.word_chain.gsub(",", " ▷ ") %></span>
+        <div class="text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg text-nowrap overflow-x-auto"><%= image.word_chain.gsub(",", " ▷ ") %></div>
       </div>
     <% end %>
   </div>
