@@ -1,0 +1,19 @@
+<div><%= @images[0].user.name %>さんのページ</div>
+<div class="flex justify-between grid-flow-col m-1">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <% @images.each do |image| %>
+      <div class="col-span-1">
+        <%= image_tag(image.image) %>
+        <% if user_signed_in? %>
+          <% if current_user.id == image.user_id %>
+            <div><%= link_to '削除', image_path(image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 my-1 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base"%></div>
+          <% end %>
+        <% end %>
+        <span class="text-xs text-center"><%= image.word_chain.gsub(",", " ▷ ") %></span>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="flex justify-center my-2">
+  <%= pagy_nav(@pagy, class: 'pagy_nav').html_safe %>
+</div>

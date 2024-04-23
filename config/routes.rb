@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   get 'images/gallery', to: 'images#gallery'
   root to: 'games#index'
   resources :images, only: [:index, :destroy, :show]
+  resources :users, only: :show
 end

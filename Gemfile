@@ -89,3 +89,5 @@ gem 'aws-sdk-s3', require: false
 gem "tailwindcss-rails", "~> 2.4"
 
 gem "devise", "~> 4.9"
+
+gem "pagy", "~> 8.2"
