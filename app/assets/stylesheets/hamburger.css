@@ -1,6 +1,10 @@
 a {
   text-decoration: none;
 }
+.user-name {
+    margin: 0 2px;
+    text-decoration: underline;
+}
 
 .header__inner {
   position: absolute;
@@ -103,7 +107,6 @@ a {
 .global-navigation__link {
   display: flex;
     align-items: center;
-    justify-content: space-between;
     color: #172e59;
     font-weight: 900;
     transition: color 0.4s;

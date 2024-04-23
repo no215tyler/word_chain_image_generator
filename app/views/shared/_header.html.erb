@@ -11,7 +11,7 @@
           <li>
             <span class='global-navigation__link'>
               <% if user_signed_in? %>
-                ようこそ <%= current_user.name %> さん
+                ようこそ <span class="user-name"><%= link_to current_user.name, user_path(current_user.id) %></span> さん
               <% else %>
                 ようこそ ゲスト さん
               <% end %>
@@ -43,7 +43,7 @@
                   <ul class="accordion__list">
                     <li>
                       <a href="#" class="accordion__link">
-                        マイページ（開発中）
+                        <%= link_to 'マイページ', user_path(current_user.id), class: 'accordion__link'  %>
                       </a>
                     </li>
                       <li>

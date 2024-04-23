@@ -16,7 +16,7 @@
             </a>
 
             <div>
-              <a href="#" class="hover:bg-gray-100 px-2 rounded-md mb-1 text-gray-500 transition duration-300 lg:text-lg">作者：<%= img.user.name %></a>
+              <a href="#" class="hover:bg-gray-100 px-2 rounded-md mb-1 text-gray-500 transition duration-300 lg:text-lg">作者：<%= link_to img.user.name, user_path(img.user.id) %></a>
 
               <div class="flex items-end gap-2">
                 <span class="text-xs sm:text-sm bg-pink-50 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg"><%= img.word_chain.gsub(",", " ▷ ") %></span>
