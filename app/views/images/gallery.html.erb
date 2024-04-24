@@ -16,7 +16,10 @@
             </a>
 
             <div>
-              <p class="px-2 rounded-md mb-1 text-gray-500 transition duration-300 lg:text-lg"><%= link_to "作者：#{img.user.name}", user_path(img.user.id) %></p>
+              <div class="flex justify-between">
+                <p class="px-2 rounded-md mb-1 text-gray-500 hover:text-gray-900 transition duration-100 lg:text-lg"><%= link_to "作者：#{img.user.name}", user_path(img.user.id) %></p>
+                <div class="text-gray-500 flex flex-col items-end">作成日時：<%= l img.created_at %></div>
+              </div>
               <div class="flex items-end gap-2">
                 <span class="text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg"><%= img.word_chain.gsub(",", " ▷ ") %></span>
               </div>

@@ -6,18 +6,21 @@
               <%= image_tag @image.image, class: "h-full w-full object-cover object-center" %>
         </div>
       </div>
-
+      
       <div class="pt-3">
         <div class="flex justify-between mb-3">
           <div class="inline-block">
-            <button class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-pink-600 focus-visible:ring active:bg-indigo-700 md:text-base"><%= link_to 'もどる', request.referrer || root_path %></button>
+            <button class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-pink-300 transition duration-100 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base"><%= link_to 'もどる', request.referrer || root_path %></button>
             <% if user_signed_in? %>
               <% if current_user.id == @image.user_id || current_user.id == 1 %>
                 <%= link_to '削除', image_path(@image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base"%>
               <% end %>
             <% end %>
-            </div>
-          <div class="text-md mb-2 top-1 right-1"><%= link_to "作者：#{@image.user.name}", user_path(@image.user.id) %></div>
+          </div>
+          <div class="text-md mb-2 flex flex-col items-end">
+            <%= link_to "作者：#{@image.user.name}", user_path(@image.user.id) %>
+            <p><%= l @image.created_at %></p>
+          </div>
         </div>
         <div class="flex px-1 bg-pink-200 mx-auto py-3 bg-opacity-50 lg:px-8 text-nowrap overflow-x-auto">
           <div class="text-sm sm:text-lg font-bold text-gray-800 w-full text-center"><%= @image.word_chain.gsub(",", " ▷ ") %></div>
