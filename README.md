@@ -52,6 +52,7 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 
 ## 実装予定の機能
 - ~~ユーザー管理機能（ペルソナが小学校低学年のためMVPリリースの段階では実装を劣後しました）~~<br> => 4/21実装完了
+
 - スコアリング機能（しりとりを続けたくなる要素＝タイピング練習につながる要素として検討）
 - 制限時間機能（ゲーム性を高める目的ですが、ペルソナ（小学校低学年）に対しては楽しめなくなる要素の可能性が高いため難易度選択の追加要素として検討）
 
@@ -83,18 +84,21 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 ### Association
 - belongs_to :user
 
+## 画面遷移図
+画面遷移図<a href="https://www.figma.com/file/xceBQ2SCIA4s3EqM3rXzjZ/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3%EF%BC%9A%E3%81%97%E3%82%8A%E3%81%A8%E3%82%8A%E7%94%BB%E5%83%8F%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC?type=design&node-id=0%3A1&mode=design&t=2WVdNl7NoeX5l6fe-1">（外部リンク）</a>
+
 ## 開発環境
-|               カテゴリ | 技術内容                                                                                            |
-| ---------------------: | :-------------------------------------------------------------------------------------------------- |
-|         フロントエンド | HTML/CSS<br>Tailwind CSS<br>JavaScript                                                              |
-|           バックエンド | Ruby 3.2.0<br>Rails 7.0.8.1<br>PostgreSQL 14.10                                                     |
-|               インフラ | Render                                                                                              |
-|       ファイルサーバー | AWS S3                                                                                              |
-|                    API | StableDiffusion API（Hugging Face）<br>OpenAI API（DALL-E3）<br>GAS翻訳API（自作）<br>Twitter API<br>Tiny_URL（短縮URL生成） |
-|         バージョン管理 | Git/GitHub                                                                                          |
-|                  CI/CD | CI：GitHub Actions<br>CD：Render                                                                    |
-| ワイヤーフレーム | Figma                                                                                    |
-|                   ER図 | drow.io |
+| カテゴリ                       | 技術内容                                                                                                                     |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| フロントエンド                 | HTML/CSS<br>Tailwind CSS<br>JavaScript                                                                                       |
+| バックエンド                   | Ruby 3.2.0<br>Rails 7.0.8.1<br>PostgreSQL 14.10                                                                              |
+| インフラ                       | Render                                                                                                                       |
+| ファイルサーバー               | AWS S3                                                                                                                       |
+| API                            | StableDiffusion API（Hugging Face）<br>OpenAI API（DALL-E3）<br>GAS翻訳API（自作）<br>Twitter API<br>Tiny_URL（短縮URL生成） |
+| バージョン管理                 | Git/GitHub                                                                                                                   |
+| CI/CD                          | CI：GitHub Actions<br>CD：Render                                                                                             |
+| ワイヤーフレーム<br>画面遷移図 | Figma                                                                                                                        |
+| ER図                           | drow.io                                                                                                                      |
 
 
 
