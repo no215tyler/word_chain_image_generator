@@ -5,8 +5,7 @@ class ImagesController < ApplicationController
   end
 
   def gallery
-    galleries = ImageGenerate.includes(:user).to_a
-    @random_gallery = galleries.sample(8)
+    @pagy, @galleries = pagy(ImageGenerate.includes(:user).order("created_at DESC").where(http_status: 200), items: 8)
   end
 
   def show

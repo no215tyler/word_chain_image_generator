@@ -7,7 +7,7 @@
 
     <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4">
       <!-- product - start -->
-      <% @random_gallery.each do |img| %>
+      <% @galleries.each do |img| %>
         <% if img.image.attached? %>
           <div>
             <a href="<%= image_path(img) %>" class="group relative mb-2 block h-80 overflow-hidden rounded-lg bg-gray-100 lg:mb-3">
@@ -16,8 +16,7 @@
             </a>
 
             <div>
-              <a href="#" class="hover:bg-gray-100 px-2 rounded-md mb-1 text-gray-500 transition duration-300 lg:text-lg">作者：<%= link_to img.user.name, user_path(img.user.id) %></a>
-
+              <p class="px-2 rounded-md mb-1 text-gray-500 transition duration-300 lg:text-lg"><%= link_to "作者：#{img.user.name}", user_path(img.user.id) %></p>
               <div class="flex items-end gap-2">
                 <span class="text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg"><%= img.word_chain.gsub(",", " ▷ ") %></span>
               </div>
@@ -28,4 +27,7 @@
       <!-- product - end -->
     </div>
   </div>
+</div>
+<div class="flex justify-center my-2">
+  <%= pagy_nav(@pagy, class: 'pagy_nav').html_safe %>
 </div>
