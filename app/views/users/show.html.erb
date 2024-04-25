@@ -9,7 +9,7 @@
         <% if user_signed_in? %>
           <% if current_user.id == image.user_id %>
             <div class="flex justify-between">
-              <div><%= link_to '削除', image_path(image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 my-1 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base"%></div>
+              <div><%= link_to '削除', image_path(image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 my-1 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base shadow-lg shadow-slate-500"%></div>
               <div class="text-gray-800 flex flex-col items-end"><p class="block w-full items-start">作成日時：</p><%= l image.created_at %></div>
             </div>
           <% end %>

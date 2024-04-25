@@ -12,6 +12,7 @@
   margin-left: calc(0.25rem * calc(1 - var(--space-reverse)));
 }
 .pagy a:not(.gap) {
+  box-shadow: 2px 2px 2px #888888;
   display: block;
   text-decoration: none;
   border-radius: 0.5rem;
