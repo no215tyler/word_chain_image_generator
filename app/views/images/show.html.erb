@@ -22,7 +22,7 @@
             <p><%= l @image.created_at %></p>
           </div>
         </div>
-        <div class="flex px-1 bg-pink-200 mx-auto py-3 bg-opacity-50 lg:px-8 text-nowrap overflow-x-auto">
+        <div class="flex px-1 bg-pink-200 mx-auto py-3 bg-opacity-50 lg:px-8 text-nowrap overflow-x-auto shadow shadow-slate-500">
           <div class="text-sm sm:text-lg font-bold text-gray-800 w-full text-center"><%= @image.word_chain.gsub(",", " ▷ ") %></div>
         </div>
       </div>
