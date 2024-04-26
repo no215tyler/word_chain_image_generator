@@ -14,7 +14,14 @@ class ImagesController < ApplicationController
 
   def destroy
     image = ImageGenerate.find(params[:id])
-    image.destroy
-    redirect_to root_path
+    if image.destroy
+      if request.referrer == image_url(image)
+        redirect_to root_path
+      else
+        redirect_to request.referrer
+      end
+    else
+      redirect_to root_path
+    end
   end
 end
