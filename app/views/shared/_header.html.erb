@@ -36,21 +36,10 @@
           <% end %>
           <% if user_signed_in? %>
             <li>
-              <button type="button" class="global-navigation__link -accordion js-sp-accordion-trigger" aria-expanded = 'false' aria-controls="accordion1">
-                ユーザー管理メニュー
-              </button>
-                <div id="accordion1" class="accordion js-accordion">
-                  <ul class="accordion__list">
-                    <li>
-                      <a href="#" class="accordion__link">
-                        <%= link_to 'マイページ', user_path(current_user.id), class: 'accordion__link'  %>
-                      </a>
-                    </li>
-                      <li>
-                        <%= link_to 'ユーザー情報編集', edit_user_registration_path, class: 'accordion__link' %>
-                    </li>
-                  </ul>
-                </div>
+              <%= link_to 'マイページ', user_path(current_user.id), class: 'global-navigation__link'  %>
+            </li>
+            <li>
+              <%= link_to 'ユーザー情報編集', edit_user_registration_path, class: 'global-navigation__link' %>
             </li>
           <% end %>
           <li>
