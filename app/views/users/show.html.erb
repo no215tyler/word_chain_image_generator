@@ -3,17 +3,12 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <% @images.each do |image| %>
       <div class="col-span-1">
-        <a href="<%= image_path(image) %>">
-          <%= image_tag(image.image) %>
+        <a href="<%= image_path(image) %>" class="block overflow-hidden rounded-lg">
+          <%= image_tag(image.image, class:"transition duration-200 hover:scale-110") %>
         </a>
-        <% if user_signed_in? %>
-          <% if current_user.id == image.user_id %>
-            <div class="flex justify-between">
-              <div><%= link_to '削除', image_path(image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 my-1 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base shadow-lg shadow-slate-500"%></div>
-              <div class="text-gray-800 flex flex-col items-end"><p class="block w-full items-start">作成日時：</p><%= l image.created_at %></div>
-            </div>
-          <% end %>
-        <% end %>
+        <div class="flex justify-between">
+          <div class="text-gray-800 flex flex-col items-end">作成日時：<%= l image.created_at %></div>
+        </div>
         <div class="text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg text-nowrap overflow-x-auto shadow shadow-slate-500"><%= image.word_chain.gsub(",", " ▷ ") %></div>
       </div>
     <% end %>
