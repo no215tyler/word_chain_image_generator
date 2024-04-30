@@ -56,5 +56,6 @@ jobs:
       run: |
         bundle exec rspec spec/models/image_generate_spec.rb
         bundle exec rspec spec/requests/games_spec.rb
+        bundle exec rspec spec/requests/images_request_spec.rb
         bundle exec rspec spec/system/image_generates_spec.rb
         bundle exec rspec spec/system/word_chains_spec.rb

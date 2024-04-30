@@ -3,6 +3,7 @@ FactoryBot.define do
     word_chain {'リス, スイカ, カエル, ルビー, ビール'}
     prompt {'squirrel, water melon, flog, ruby, beer'}
     http_status { 200 }
+    generate_model {'Stable Diffusion'}
     association :user
 
     after(:build) do |image_generate|
