@@ -66,3 +66,4 @@ jobs:
         bundle exec rspec spec/system/image_generates_spec.rb
         bundle exec rspec spec/system/word_chains_spec.rb
         bundle exec rspec spec/requests/users_request_spec.rb
+        bundle exec rspec spec/models/user_spec.rb

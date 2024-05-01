@@ -5,7 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 6, message: 'ユーザー名は7文字未満で入力してください' }
   PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i
   validates :password, format: { with: PASSWORD_REGEX, message: '数字と文字列を一つ以上組み合わせてください' }
 end
