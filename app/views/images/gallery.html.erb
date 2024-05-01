@@ -5,7 +5,7 @@
       <%# <a href="#" class="inline-block rounded-lg border bg-white px-4 py-2 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:px-8 md:py-3 md:text-base">Show more</a> %>
     </div>
 
-    <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4">
+    <div class="grid-cols-1 grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4">
       <!-- product - start -->
       <% @galleries.each do |img| %>
         <% if img.image.attached? %>
@@ -21,7 +21,7 @@
                 <div class="text-gray-500 flex flex-col items-end">作成日時：<%= l img.created_at %></div>
               </div>
               <div class="flex items-end gap-2">
-                <span class="text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg shadow shadow-slate-500"><%= img.word_chain.gsub(",", " ▷ ") %></span>
+                <span class="overflow-x-auto w-full whitespace-nowrap text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg shadow shadow-slate-500"><%= img.word_chain.gsub(",", " ▷ ") %></span>
               </div>
             </div>
           </div>
