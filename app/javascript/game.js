@@ -11,6 +11,8 @@ const ngSound = new Audio('/sounds/ng_sound.mp3');
 ngSound.volume = 0.1;
 const waitingSound = new Audio('/sounds/waiting_se.mp3')
 waitingSound.volume = 0.1;
+const waitingSound2 = new Audio('/sounds/call-or-raise.mp3')
+waitingSound2.volume = 0.1;
 let keyListenerAdded = false;
 
 document.addEventListener('turbo:load', setupGameListeners);
