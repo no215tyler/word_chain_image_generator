@@ -574,7 +574,6 @@ function setupGameListeners() {
       shareButton.textContent = 'X (Twitter) で共有';
       shareButton.classList.add('share-button');
       shareButton.style.position = 'relative';
-      shareButton.setAttribute('data-tooltip', '画像をダウンロードしてからシェアしてね');
       shareButton.addEventListener('click', () => {
         // 単語をテキストとして結合し、エンコード
         const wordsText = shareWords.join('→');

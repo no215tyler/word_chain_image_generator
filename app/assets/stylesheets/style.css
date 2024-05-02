@@ -712,51 +712,6 @@ button {
   position: relative;
 }
 
-.share-button[data-tooltip]::after,
-.share-button[data-tooltip]::before {
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s, visibility 0.3s;
-  z-index: 1000;
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* 吹き出し本体のスタイル */
-.share-button[data-tooltip]:hover::after {
-  content: attr(data-tooltip);
-  visibility: visible;
-  opacity: 1;
-  width: max-content;
-  background: #333;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  white-space: nowrap;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-  transform: translateX(-10%) translateY(-15px);
-}
-
-/* 吹き出しの矢印のスタイル */
-.share-button[data-tooltip]:hover::before {
-  content: '';
-  visibility: visible;
-  opacity: 1;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid #333; /* 吹き出しと同じ色の矢印 */
-  transform: translateX(-50%) translateY(-8px);
-}
-
-/* ホバー時に吹き出しと矢印を表示 */
-.share-button[data-tooltip]:hover::after,
-.share-button[data-tooltip]:hover::before {
-  visibility: visible;
-  opacity: 1;
-}
 
 #error_explanation {
   background-color: yellow;
