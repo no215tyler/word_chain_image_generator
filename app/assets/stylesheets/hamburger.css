@@ -115,3 +115,15 @@ a {
 .global-navigation__link.-active::after {
   transform: translateY(-50%) rotate(-90deg);
 }
+.sound-setting {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+.sound {
+    margin: 4px 0;
+    margin-left: 8px;
+}
+h5 {
+    margin-bottom: 4px;
+}

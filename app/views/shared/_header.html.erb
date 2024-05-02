@@ -45,6 +45,19 @@
           <li>
             <%= link_to 'ギャラリー（みんなの作品例）', images_gallery_path, class: 'global-navigation__link' %>
           </li> 
+          <li>
+            <h5 class='global-navigation__link'>サウンド選択（画像生成音）</h5>
+            <form class='global-navigation__link sound-setting'>
+              <div class='sound'>
+                <input type="radio" name="waitingSound" value="call" checked="checked">
+                デフォルト
+              </div>
+              <div class='sound'>
+                <input type="radio" name="waitingSound" value="raise">
+                ゆかいな曲
+              </div>
+            </form>
+          </li>
         </ul>
         <div id="js-focus-trap" tabindex="0"></div>
       </nav>
