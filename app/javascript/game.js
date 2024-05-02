@@ -11,8 +11,6 @@ const ngSound = new Audio('/sounds/ng_sound.mp3');
 ngSound.volume = 0.1;
 const waitingSound = new Audio('/sounds/waiting_se.mp3')
 waitingSound.volume = 0.1;
-const waitingSound2 = new Audio('/sounds/call-or-raise.mp3')
-waitingSound2.volume = 0.1;
 let keyListenerAdded = false;
 
 document.addEventListener('turbo:load', setupGameListeners);
@@ -28,6 +26,33 @@ function setupGameListeners() {
   usedWords = []; // これまでに入力された単語を保持する配列
   shareWords = [];
   restartOnAction = null; 
+  // ローカルストレージから現在のサウンド設定を読み込む
+  const savedSoundSetting = localStorage.getItem('waitingSoundSetting');
+  if (savedSoundSetting) {
+    document.querySelectorAll(`input[name="waitingSound"][value="${savedSoundSetting}"]`).forEach(input => {
+      input.checked = true;
+    });
+    updateWaitingSound(savedSoundSetting);
+  }
+  document.querySelectorAll('input[name="waitingSound"]').forEach(input => {
+    input.addEventListener('change', function() {
+      localStorage.setItem('waitingSoundSetting', this.value);
+      updateWaitingSound(this.value);
+    });
+  });
+
+  function updateWaitingSound(setting) {
+    switch (setting) {
+      case 'raise':
+        waitingSound.src = '/sounds/call-or-raise.mp3';
+        break;
+      case 'call':
+        waitingSound.src = '/sounds/waiting_se.mp3';
+        break;
+    }
+    waitingSound.load();
+  }
+
   function showModal () {
     if (!localStorage.getItem('modalShown')) {
       toggleHowToPlayPopup(true); // あそびかたポップアップの表示
