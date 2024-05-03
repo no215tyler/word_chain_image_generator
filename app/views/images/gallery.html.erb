@@ -17,8 +17,13 @@
 
             <div>
               <div class="flex justify-between items-center">
-                <p class="px-2 rounded-md text-gray-500 hover:text-gray-900 transition duration-100 lg:text-lg"><%= link_to "作者：#{img.user.name}", user_path(img.user.id) %></p>
-                <div class="text-gray-500 flex flex-col items-end">作成日時：<%= l img.created_at %></div>
+                <p class="px-2 rounded-md text-gray-500 hover:text-gray-900 transition duration-100 lg:text-lg">
+                  <%= link_to user_path(img.user.id) do %>
+                    <span class="inline-block lg:block xl:inline-block">作者：</span>
+                    <span class="inline-block lg:block xl:inline-block"><%= img.user.name %></span>
+                  <% end %>
+                </p>
+                <div class="text-gray-500 flex items-end whitespace-nowrap">作成日時：<%= l img.created_at %></div>
               </div>
               <div class="flex items-end gap-2">
                 <span class="overflow-x-auto w-full whitespace-nowrap text-xs sm:text-sm bg-pink-100 mt-2 py-3 px-2 font-bold text-gray-800 rounded-sm lg:text-lg shadow shadow-slate-500"><%= img.word_chain.gsub(",", " ▷ ") %></span>
