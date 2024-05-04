@@ -10,7 +10,7 @@
       <% @galleries.each do |img| %>
         <% if img.image.attached? %>
           <div>
-            <a href="<%= image_path(img) %>" class="group relative mb-2 block h-80 overflow-hidden rounded-lg bg-gray-100 lg:mb-3">
+            <a href="<%= image_path(img) %>" class="shadow shadow-slate-500 group relative mb-2 block h-80 overflow-hidden rounded-lg bg-gray-100 lg:mb-3">
 
               <%= image_tag img.image, class: "h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" %>
             </a>
