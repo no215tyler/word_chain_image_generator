@@ -65,6 +65,17 @@ window.addEventListener('turbo:load', function() {
       flg = false;
     }
   });
+  document.addEventListener('click', function(e) {
+    // メニューとハンバーガーボタン以外の領域がクリックされたか確認
+    if (!menu.contains(e.target) && !hamburger.contains(e.target) && flg) {
+      // メニューを非表示にする
+      hamburger.classList.remove(CLASS);
+      menu.classList.remove(CLASS);
+      backgroundFix(false);
+      hamburger.setAttribute('aria-expanded', 'false');
+      flg = false;
+    }
+  });
 
   // メニュー内アコーディオン制御
   accordionTrigger.forEach((item) => {
