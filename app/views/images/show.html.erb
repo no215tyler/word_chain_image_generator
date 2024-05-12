@@ -10,7 +10,9 @@
       <div class="pt-3">
         <div class="flex justify-between mb-3">
           <div class="inline-block">
-            <button class="inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-pink-300 transition duration-100 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base shadow-lg shadow-slate-500"><%= link_to 'もどる', request.referrer || root_path %></button>
+            <%= link_to(request.referrer || root_path, class: "inline-block rounded-lg bg-pink-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-pink-300 transition duration-100 hover:bg-pink-600 focus-visible:ring active:bg-pink-700 md:text-base shadow-lg shadow-slate-500") do %>
+              <p>もどる</p>
+            <% end %>
             <% if user_signed_in? %>
               <% if current_user.id == @image.user_id || current_user.id == 1 %>
                 <%= link_to '削除', image_path(@image), data: { turbo_confirm: '本当に削除しますか？', turbo_method: :delete } ,class: "inline-block rounded-lg bg-red-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-red-300 transition duration-100 hover:bg-red-600 focus-visible:ring active:bg-red-700 md:text-base shadow-lg shadow-slate-500"%>
