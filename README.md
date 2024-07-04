@@ -93,12 +93,13 @@ PCを扱うためには基本的なキーボードタイピングが必要で、
 | フロントエンド                 | HTML/CSS<br>Tailwind CSS<br>JavaScript                                                                                       |
 | バックエンド                   | Ruby 3.2.0<br>Rails 7.0.8.1<br>PostgreSQL 14.10                                                                              |
 | インフラ                       | Render                                                                                                                       |
-| ファイルサーバー               | AWS S3                                                                                                                       |
+| ファイルストレージ             | AWS S3                                                                                                                       |
 | API                            | StableDiffusion API（Hugging Face）<br>OpenAI API（DALL-E3）<br>GAS翻訳API（自作）<br>Twitter API<br>Tiny_URL（短縮URL生成） |
 | バージョン管理                 | Git/GitHub                                                                                                                   |
 | CI/CD                          | CI：GitHub Actions<br>CD：Render                                                                                             |
 | ワイヤーフレーム<br>画面遷移図 | Figma                                                                                                                        |
 | ER図                           | drow.io                                                                                                                      |
+| アナリティクス                 | Google Analytics                                                                                                             |
 
 
 
