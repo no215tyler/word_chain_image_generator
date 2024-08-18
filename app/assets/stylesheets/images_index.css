@@ -10,7 +10,8 @@
   font-size: 32px;
   color: #333;
   margin-bottom: 20px;
-  font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-family: "Zen Maru Gothic", serif, sans-serif, Arial,
+    "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
   background-color: transparent;
@@ -60,7 +61,7 @@
   font-size: 2em;
   transition: background-color 0.5s ease;
   user-select: none;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 50%;
 }
@@ -75,10 +76,9 @@
   transform: translateY(-50%);
 }
 
-
 .slider:hover .prev,
 .slider:hover .next {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .image-container {
@@ -112,7 +112,6 @@
   text-decoration: none;
 }
 
-
 .hover-container:hover .hover-list ul {
   display: flex;
   justify-content: center;
@@ -137,7 +136,8 @@
   color: #333;
   font-size: 0.9em;
   font-weight: bold;
-  font-family: "Zen Maru Gothic", serif, sans-serif, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-family: "Zen Maru Gothic", serif, sans-serif, Arial,
+    "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 
 .word-content {
@@ -148,11 +148,11 @@
   .slider .prev,
   .slider .next {
     font-size: 1.5em;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
   }
   .slider:hover .prev,
   .slider:hover .next {
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
   }
   .slider {
     position: relative;

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Images", type: :request do
+RSpec.describe 'Images', type: :request do
   before do
     @image = FactoryBot.create(:image_generate)
     sign_in @image.user
@@ -13,7 +13,7 @@ RSpec.describe "Images", type: :request do
     end
     it 'galleryアクションへリクエストするとレスポンスにしりとりの結果が存在する' do
       get images_gallery_path
-      expect(response.body).to include(@image.word_chain.gsub(",", " ▷ "))
+      expect(response.body).to include(@image.word_chain.gsub(',', ' ▷ '))
     end
     it 'galleryアクションへリクエストするとレスポンスに画像が存在する' do
       get images_gallery_path
@@ -29,7 +29,7 @@ RSpec.describe "Images", type: :request do
     end
     it 'showアクションにリクエストするとレスポンスにしりとりの単語が含まれる' do
       get image_path(@image)
-      expect(response.body).to include(@image.word_chain.gsub(",", " ▷ "))
+      expect(response.body).to include(@image.word_chain.gsub(',', ' ▷ '))
     end
     it 'showアクションにリクエストするとレスポンスに画像が含まれる' do
       get image_path(@image)
@@ -53,7 +53,9 @@ RSpec.describe "Images", type: :request do
 
   describe 'DELETE #destroy' do
     it '画像が削除される' do
-      expect{delete image_path(@image), headers: { "HTTP_REFERER" => image_path(@image) }}.to change(ImageGenerate, :count).by(-1)
+      expect do
+        delete image_path(@image), headers: { 'HTTP_REFERER' => image_path(@image) }
+      end.to change(ImageGenerate, :count).by(-1)
     end
   end
 end

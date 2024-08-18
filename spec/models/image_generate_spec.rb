@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ImageGenerate, type: :model do
-
   before do
     user = FactoryBot.create(:user)
     @result_generate = FactoryBot.build(:image_generate)
@@ -14,15 +13,14 @@ RSpec.describe ImageGenerate, type: :model do
       end
     end
 
-
     context '画像生成結果を保存できない' do
       it 'しりとりの単語がひとつも登録されていない場合は保存できない' do
-        @result_generate.word_chain = ""
+        @result_generate.word_chain = ''
         @result_generate.valid?
         expect(@result_generate.errors.full_messages).to include("Word chain can't be blank")
       end
       it 'プロンプトが空だと保存できない' do
-        @result_generate.prompt = ""
+        @result_generate.prompt = ''
         @result_generate.valid?
         expect(@result_generate.errors.full_messages).to include("Prompt can't be blank")
       end

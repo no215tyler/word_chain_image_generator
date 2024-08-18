@@ -5,7 +5,7 @@ class ImagesController < ApplicationController
   end
 
   def gallery
-    @pagy, @galleries = pagy(ImageGenerate.includes(:user).order("created_at DESC").where(http_status: 200), items: 8)
+    @pagy, @galleries = pagy(ImageGenerate.includes(:user).order('created_at DESC').where(http_status: 200), items: 8)
   end
 
   def show

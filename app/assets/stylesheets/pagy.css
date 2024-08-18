@@ -23,7 +23,8 @@
 .pagy a:not(.gap):hover {
   background-color: #d1d5db;
 }
-.pagy a:not(.gap):not([href]) { /* disabled links */
+.pagy a:not(.gap):not([href]) {
+  /* disabled links */
   cursor: default;
   background-color: #f3f4f6;
   color: #d1d5db;

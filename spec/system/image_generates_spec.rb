@@ -1,14 +1,14 @@
 require 'rails_helper'
 require 'webmock/rspec'
 
-RSpec.describe "画像生成の開始", type: :system do
+RSpec.describe '画像生成の開始', type: :system do
   before do
     user = FactoryBot.create(:user)
     sign_in user
     driven_by(:selenium_chrome_headless)
 
-    stub_request(:post, "https://api-inference.huggingface.co/models/stablediffusionapi/breakdomainxl-v6")
-    .to_return(status: 200, body: "ダミーレスポンス", headers: {})
+    stub_request(:post, 'https://api-inference.huggingface.co/models/stablediffusionapi/breakdomainxl-v6')
+      .to_return(status: 200, body: 'ダミーレスポンス', headers: {})
   end
 
   context '画像生成をリクエストできる場合' do
@@ -70,7 +70,6 @@ RSpec.describe "画像生成の開始", type: :system do
     end
   end
 
-
   context '画像生成をリクエストできない場合' do
     it '単語が5つ未満の場合はゲームオーバーでない限り画像生成できない' do
       visit root_path
@@ -86,5 +85,4 @@ RSpec.describe "画像生成の開始", type: :system do
       expect(page).to have_button('画像生成', disabled: true)
     end
   end
-
 end

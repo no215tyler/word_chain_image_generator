@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "ユーザー新規登録", type: :system do
+RSpec.describe 'ユーザー新規登録', type: :system do
   before do
     @user = FactoryBot.build(:user)
     driven_by(:selenium_chrome_headless)
@@ -27,7 +27,10 @@ RSpec.describe "ユーザー新規登録", type: :system do
       fill_in 'user_password_confirmation', with: @user.password_confirmation
 
       # サインアップボタンをクリックするとユーザーモデルのカウントが1上昇する
-      expect{click_on('サインアップ'); sleep 1}.to change { User.count }.by(1)
+      expect do
+        click_on('サインアップ')
+        sleep 1
+      end.to change { User.count }.by(1)
       # トップページへ遷移することを確認する
       expect(page).to have_current_path(root_path)
 
@@ -63,7 +66,10 @@ RSpec.describe "ユーザー新規登録", type: :system do
       fill_in 'user_password_confirmation', with: ''
 
       # サインアップボタンをクリックいてもユーザーモデルのカウントが上昇しないことを確認する
-      expect{click_on('サインアップ'); sleep 1}.to change { User.count }.by(0)
+      expect do
+        click_on('サインアップ')
+        sleep 1
+      end.to change { User.count }.by(0)
 
       # 新規登録ページへ戻されることを確認する
       expect(page).to have_current_path(new_user_registration_path)
@@ -71,7 +77,7 @@ RSpec.describe "ユーザー新規登録", type: :system do
   end
 end
 
-RSpec.describe "ユーザーログイン", type: :system do
+RSpec.describe 'ユーザーログイン', type: :system do
   before do
     @user = FactoryBot.create(:user)
     driven_by(:selenium_chrome_headless)
@@ -111,7 +117,7 @@ RSpec.describe "ユーザーログイン", type: :system do
       expect(page).to have_no_content('ログイン')
     end
   end
-  
+
   context 'ログインできない場合' do
     it '保存されているユーザーの情報と合致しないとログインできない' do
       # トップページへ移動する

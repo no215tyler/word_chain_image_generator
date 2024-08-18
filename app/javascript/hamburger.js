@@ -1,4 +1,4 @@
-window.addEventListener('turbo:load', function() {
+window.addEventListener("turbo:load", function () {
   // メニュー展開時に背景を固定
   const backgroundFix = (bool) => {
     const scrollingElement = () => {
@@ -16,7 +16,7 @@ window.addEventListener('turbo:load', function() {
       position: "fixed",
       top: `${scrollY * -1}px`,
       left: "0",
-      width: "100vw"
+      width: "100vw",
     };
 
     Object.keys(fixedStyles).forEach((key) => {
@@ -40,10 +40,12 @@ window.addEventListener('turbo:load', function() {
   let accordion = document.querySelectorAll(".js-sp-accordion");
 
   // メニュー開閉制御
-  hamburger.addEventListener("click", (e) => { //ハンバーガーボタンが選択されたら
+  hamburger.addEventListener("click", (e) => {
+    //ハンバーガーボタンが選択されたら
     e.currentTarget.classList.toggle(CLASS);
     menu.classList.toggle(CLASS);
-    if (flg) {// flgの状態で制御内容を切り替え
+    if (flg) {
+      // flgの状態で制御内容を切り替え
       backgroundFix(false);
       hamburger.setAttribute("aria-expanded", "false");
       hamburger.focus();
@@ -54,7 +56,8 @@ window.addEventListener('turbo:load', function() {
       flg = true;
     }
   });
-  window.addEventListener("keydown", (e) => { //escキー押下でメニューを閉じられるように
+  window.addEventListener("keydown", (e) => {
+    //escキー押下でメニューを閉じられるように
     if (e.key === "Escape") {
       hamburger.classList.remove(CLASS);
       menu.classList.remove(CLASS);
@@ -65,14 +68,14 @@ window.addEventListener('turbo:load', function() {
       flg = false;
     }
   });
-  document.addEventListener('click', function(e) {
+  document.addEventListener("click", function (e) {
     // メニューとハンバーガーボタン以外の領域がクリックされたか確認
     if (!menu.contains(e.target) && !hamburger.contains(e.target) && flg) {
       // メニューを非表示にする
       hamburger.classList.remove(CLASS);
       menu.classList.remove(CLASS);
       backgroundFix(false);
-      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute("aria-expanded", "false");
       flg = false;
     }
   });
@@ -90,11 +93,10 @@ window.addEventListener('turbo:load', function() {
         accordionFlg = true;
       }
     });
-
   });
 
   // フォーカストラップ制御
   focusTrap.addEventListener("focus", (e) => {
     hamburger.focus();
   });
-})
+});

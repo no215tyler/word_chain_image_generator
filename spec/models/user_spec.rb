@@ -42,31 +42,31 @@ RSpec.describe User, type: :model do
       it 'ユーザー名が7文字以上だと登録できない' do
         @user.name = 'sampletest'
         @user.valid?
-        expect(@user.errors.full_messages).to include("Name ユーザー名は7文字未満で入力してください")
+        expect(@user.errors.full_messages).to include('Name ユーザー名は7文字未満で入力してください')
       end
       it '重複したメールアドレスが存在する場合は登録できない' do
         @user.save
         user2 = FactoryBot.build(:user)
         user2.email = @user.email
         user2.valid?
-        expect(user2.errors.full_messages).to include("Email has already been taken")
+        expect(user2.errors.full_messages).to include('Email has already been taken')
       end
       it 'メールアドレスは「@」を含まないと登録できない' do
         @user.email = 'testuser.com'
         @user.valid?
-        expect(@user.errors.full_messages).to include("Email is invalid")
+        expect(@user.errors.full_messages).to include('Email is invalid')
       end
       it 'パスワードが5文字以下では登録できない' do
         @user.password = 'ab123'
         @user.password_confirmation = @user.password
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
+        expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
       it 'パスワードが129文字以上では登録できない' do
         @user.password = Faker::Internet.password(min_length: 129, max_length: 150)
         @user.password_confirmation = @user.password
         @user.valid?
-        expect(@user.errors.full_messages).to include("Password is too long (maximum is 128 characters)")
+        expect(@user.errors.full_messages).to include('Password is too long (maximum is 128 characters)')
       end
     end
   end
