@@ -677,7 +677,7 @@ function setupGameListeners() {
         console.error("エラーが発生しました:", error);
         container.innerHTML = `
       <div class="error-message-container">
-        <p class="error-message">画像生成エラー<br>時間をおいて試してください</p>
+        <p class="error-message">${error.message}</p>
         <div class="error-animation">sorry...🙏🏼</div>
       </div>
     `;
