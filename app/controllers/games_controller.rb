@@ -6,6 +6,11 @@ class GamesController < ApplicationController
   def create
     words = params[:words]
     filtered_words = WordFilterService.filter_words(words)
+    if words.length != filtered_words.length
+      resopnse_body = { error: '画像生成エラー: 不適切な単語が入力されています' }
+      return render json: response_body, status: 406
+    end
+
     translated_words = TranslationService.translate(filtered_words.join(','))
     filename = translated_words.clone
     puts filename
