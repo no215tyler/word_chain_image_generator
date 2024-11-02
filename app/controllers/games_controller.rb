@@ -50,6 +50,9 @@ class GamesController < ApplicationController
   def privacy_policy
   end
 
+  def maintenance
+  end
+
   private
 
   def generate_image(translated_words, generate_model = 'Stable Diffusion')
